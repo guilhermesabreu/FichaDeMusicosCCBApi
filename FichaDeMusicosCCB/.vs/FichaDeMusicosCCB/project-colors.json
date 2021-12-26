@@ -1,0 +1,16 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "313e8b78-4e68-489a-9576-d8cf5d717331": {
+      "ProjectGuid": "313e8b78-4e68-489a-9576-d8cf5d717331",
+      "DisplayName": "FichaDeMusicosCCB.Api",
+      "ColorIndex": 0
+    },
+    "5f4aa21e-4072-42e2-8ff2-4ea01cab12ae": {
+      "ProjectGuid": "5f4aa21e-4072-42e2-8ff2-4ea01cab12ae",
+      "DisplayName": "FichaDeMusicosCCB.Api",
+      "ColorIndex": 1
+    }
+  },
+  "NextColorIndex": 2
+}

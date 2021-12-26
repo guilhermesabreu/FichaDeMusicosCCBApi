@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "wbHg+Nlmlj5RPH+FhfTJ5xOD6C1LuNId0XKScQvyb466vxcQmm3mJZ1KbwsJChiZTFasX/WYke/WiJuG59EFag==",
+  "success": true,
+  "projectFilePath": "C:\\src\\CCB\\Ficha de Musicos CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Api\\FichaDeMusicosCCB.Api.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\guilh\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
+    "C:\\Users\\guilh\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\guilh\\.nuget\\packages\\swashbuckle.aspnetcore\\6.2.3\\swashbuckle.aspnetcore.6.2.3.nupkg.sha512",
+    "C:\\Users\\guilh\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.2.3\\swashbuckle.aspnetcore.swagger.6.2.3.nupkg.sha512",
+    "C:\\Users\\guilh\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.2.3\\swashbuckle.aspnetcore.swaggergen.6.2.3.nupkg.sha512",
+    "C:\\Users\\guilh\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.2.3\\swashbuckle.aspnetcore.swaggerui.6.2.3.nupkg.sha512"
+  ],
+  "logs": []
+}
