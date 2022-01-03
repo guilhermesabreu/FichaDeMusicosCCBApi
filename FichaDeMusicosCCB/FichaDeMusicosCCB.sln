@@ -5,6 +5,14 @@ VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FichaDeMusicosCCB.Api", "FichaDeMusicosCCB.Api\FichaDeMusicosCCB.Api.csproj", "{5F4AA21E-4072-42E2-8FF2-4EA01CAB12AE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FichaDeMusicosCCB.Domain", "FichaDeMusicosCCB.Domain\FichaDeMusicosCCB.Domain.csproj", "{04026F7F-111D-4DB1-B34B-135199FD1B5E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FichaDeMusicosCCB.Application", "FichaDeMusicosCCB.Application\FichaDeMusicosCCB.Application.csproj", "{097FAC3A-89D8-4019-9FC6-8615018DCAB8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FichaDeMusicosCCB.Persistence", "FichaDeMusicosCCB.Persistence\FichaDeMusicosCCB.Persistence.csproj", "{029449DD-EA3F-4206-AAC0-9065EB92C511}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FichaDeMusicosCCB.Test", "FichaDeMusicosCCB.Test\FichaDeMusicosCCB.Test.csproj", "{398DF7D4-6232-4651-88A6-450EC7784B58}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +23,22 @@ Global
 		{5F4AA21E-4072-42E2-8FF2-4EA01CAB12AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F4AA21E-4072-42E2-8FF2-4EA01CAB12AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F4AA21E-4072-42E2-8FF2-4EA01CAB12AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04026F7F-111D-4DB1-B34B-135199FD1B5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04026F7F-111D-4DB1-B34B-135199FD1B5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04026F7F-111D-4DB1-B34B-135199FD1B5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04026F7F-111D-4DB1-B34B-135199FD1B5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{097FAC3A-89D8-4019-9FC6-8615018DCAB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{097FAC3A-89D8-4019-9FC6-8615018DCAB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{097FAC3A-89D8-4019-9FC6-8615018DCAB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{097FAC3A-89D8-4019-9FC6-8615018DCAB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{029449DD-EA3F-4206-AAC0-9065EB92C511}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{029449DD-EA3F-4206-AAC0-9065EB92C511}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{029449DD-EA3F-4206-AAC0-9065EB92C511}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{029449DD-EA3F-4206-AAC0-9065EB92C511}.Release|Any CPU.Build.0 = Release|Any CPU
+		{398DF7D4-6232-4651-88A6-450EC7784B58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{398DF7D4-6232-4651-88A6-450EC7784B58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{398DF7D4-6232-4651-88A6-450EC7784B58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{398DF7D4-6232-4651-88A6-450EC7784B58}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

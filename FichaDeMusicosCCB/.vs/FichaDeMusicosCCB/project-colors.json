@@ -10,7 +10,32 @@
       "ProjectGuid": "5f4aa21e-4072-42e2-8ff2-4ea01cab12ae",
       "DisplayName": "FichaDeMusicosCCB.Api",
       "ColorIndex": 1
+    },
+    "04026f7f-111d-4db1-b34b-135199fd1b5e": {
+      "ProjectGuid": "04026f7f-111d-4db1-b34b-135199fd1b5e",
+      "DisplayName": "FichaDeMusicosCCB.Domain",
+      "ColorIndex": 2
+    },
+    "097fac3a-89d8-4019-9fc6-8615018dcab8": {
+      "ProjectGuid": "097fac3a-89d8-4019-9fc6-8615018dcab8",
+      "DisplayName": "FichaDeMusicosCCB.Application",
+      "ColorIndex": 3
+    },
+    "029449dd-ea3f-4206-aac0-9065eb92c511": {
+      "ProjectGuid": "029449dd-ea3f-4206-aac0-9065eb92c511",
+      "DisplayName": "FichaDeMusicosCCB.Persistence",
+      "ColorIndex": 4
+    },
+    "398df7d4-6232-4651-88a6-450ec7784b58": {
+      "ProjectGuid": "398df7d4-6232-4651-88a6-450ec7784b58",
+      "DisplayName": "FichaDeMusicosCCB.Test",
+      "ColorIndex": 5
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Arquivos Diversos",
+      "ColorIndex": -1
     }
   },
-  "NextColorIndex": 2
+  "NextColorIndex": 6
 }

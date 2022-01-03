@@ -1,0 +1,38 @@
+using FichaDeMusicosCCB.Application.Pessoas.Commands;
+using FichaDeMusicosCCB.Domain.Entities.Identity;
+using FichaDeMusicosCCB.Domain.InputModels;
+using MediatR;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+
+namespace FichaDeMusicosCCB.Api.Controllers
+{
+    [Route("api/v1/pessoas")]
+    [ApiController]
+
+    public class PessoaController : ControllerBase
+    {
+        private readonly IMediator _mediator;
+        private readonly ILogger<PessoaController> _logger;
+
+        public PessoaController(IMediator mediator, ILogger<PessoaController> logger)
+        {
+            _mediator = mediator;
+            _logger = logger;
+        }
+
+        [HttpGet("login")]
+        public IActionResult Login()
+        {
+            return Ok("Logado com sucesso");
+        }
+
+        [HttpPost("cadastrar-pessoa")]
+        public async Task<IActionResult> CadastrarPessoa(PessoaInputModel input)
+        {
+            var comando = new CadastrarPessoaCommand(input);
+            var result = await _mediator.Send(comando);
+            return Ok(result);
+        }
+    }
+}
