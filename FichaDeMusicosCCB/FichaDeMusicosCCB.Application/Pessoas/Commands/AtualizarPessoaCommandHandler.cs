@@ -10,21 +10,25 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FichaDeMusicosCCB.Application.Pessoas.Commands
 {
-    public class CadastrarPessoaCommandHandler : IRequestHandler<CadastrarPessoaCommand, PessoaViewModel>
+    public class AtualizarPessoaCommandHandler : IRequestHandler<AtualizarPessoaCommand, PessoaViewModel>
     {
         private readonly FichaDeMusicosCCBContext _context;
         private readonly UserManager<User> _userManager;
-        public CadastrarPessoaCommandHandler(FichaDeMusicosCCBContext context, UserManager<User> userManager)
+        private readonly SignInManager<User> _signInManager;
+        public AtualizarPessoaCommandHandler(FichaDeMusicosCCBContext context, UserManager<User> userManager, SignInManager<User> signInManager)
         {
+            _signInManager = signInManager;
             _userManager = userManager;
             _context = context;
         }
-        public async Task<PessoaViewModel> Handle(CadastrarPessoaCommand request, CancellationToken cancellationToken)
+        public async Task<PessoaViewModel> Handle(AtualizarPessoaCommand request, CancellationToken cancellationToken)
         {
             try
             {
+
                 #region MapearParametro
-                TypeAdapterConfig<CadastrarPessoaCommand, Pessoa>.NewConfig()
+                TypeAdapterConfig<AtualizarPessoaCommand, Pessoa>.NewConfig()
+                    .Map(dest => dest.IdPessoa, src => src.Id)
                     .Map(dest => dest.User.UserName, src => src.UserName)
                     .Map(dest => dest.User.Password, src => src.Password)
                     .Map(dest => dest.NomePessoa, src => src.Nome)
@@ -41,12 +45,11 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
                     .Map(dest => dest.InstrumentoPessoa, src => src.Instrumento)
                     .Map(dest => dest.CondicaoPessoa, src => src.Condicao);
                 #endregion
-                var pessoaEntity = request.Adapt<Pessoa>();
+                var pessoaAtual = request.Adapt<Pessoa>();
 
-                await CriarRoles();
-                await VerificaExistenciaPessoa(pessoaEntity);
+                var pessoaAntiga = await PessoaEncontrada(pessoaAtual.IdPessoa);
                 #region Mapear Response
-                TypeAdapterConfig<Pessoa, PessoaViewModel>.NewConfig()
+                TypeAdapterConfig<FichaDeMusicosCCB.Domain.Entities.Pessoa, PessoaViewModel>.NewConfig()
                     .Map(dest => dest.Nome, src => src.NomePessoa)
                     .Map(dest => dest.ApelidoInstrutor, src => src.ApelidoInstrutorPessoa)
                     .Map(dest => dest.ApelidoEncarregado, src => src.ApelidoEncarregadoPessoa)
@@ -62,7 +65,7 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
                     .Map(dest => dest.Condicao, src => src.CondicaoPessoa);
                 #endregion
 
-                var pessoaResponse = await PessoaCriada(pessoaEntity);
+                var pessoaResponse = await PessoaAtualizada(pessoaAntiga, pessoaAtual);
                 return pessoaResponse.Adapt<PessoaViewModel>();
             }
             catch (ArgumentException ex)
@@ -76,60 +79,42 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
 
         }
 
-        public async Task<Pessoa> PessoaCriada(Pessoa pessoa)
+        public async Task<Pessoa> PessoaAtualizada(Pessoa pessoaAntiga, Pessoa pessoaAtual)
         {
-            pessoa.User.Role = pessoa.CondicaoPessoa.ToUpper();
-            var result = await _userManager.CreateAsync(pessoa.User, pessoa.User.Password);
-            var resultRole = await _userManager.AddToRoleAsync(pessoa.User, pessoa.User.Role);
-            if (!resultRole.Succeeded)
-                throw new ArgumentException("Não foi possível criar a credencial desta pessoa");
+            var userNameAtual = pessoaAtual.User.UserName;
+            var senhaAtual = pessoaAtual.User.Password;
+            var senhaAntiga = pessoaAntiga.User.Password;
 
-            _context.Pessoas.Add(pessoa);
-            if (_context.SaveChanges().Equals(0) || !result.Succeeded)
-                throw new ArgumentException("Não foi possível criar esta pessoa, verifique os dados inseridos");
+            var pessoaAtualizada = pessoaAtual;
+            pessoaAtualizada.User = pessoaAntiga.User;
+            pessoaAtualizada.User.NormalizedUserName = userNameAtual;
+            pessoaAtualizada.User.UserName = userNameAtual;
+            pessoaAtualizada.User.Password = senhaAtual;
+            
+            _context.Pessoas.Update(pessoaAtualizada);
+            if (_context.SaveChanges().Equals(0))
+                throw new ArgumentException("Não foi possível atualizar esta pessoa, verifique os dados inseridos");
 
-            return pessoa;
+            //Realizar atualização do UserName e Password corretamente
+            var result = await _userManager.UpdateAsync(pessoaAtual.User);
+            if (!result.Succeeded)
+                throw new ArgumentException("Não foi possível atualizar a credencial desta pessoa");
 
+            var atualizaSenha = await _userManager.ChangePasswordAsync(pessoaAntiga.User, senhaAntiga, senhaAtual);
+            if (!atualizaSenha.Succeeded)
+                throw new ArgumentException("Não foi possível atualizar a credencial desta pessoa");
+
+            return pessoaAtual;
         }
 
-
-        public async Task VerificaExistenciaPessoa(Pessoa pessoa)
+        public async Task<Pessoa> PessoaEncontrada(long idPessoa)
         {
-            var query = await _context.Users.Where(x => x.UserName == pessoa.User.UserName).ToListAsync();
+            var query = await _context.Pessoas.AsNoTracking().Include(x => x.User).Where(x => x.IdPessoa == idPessoa).FirstOrDefaultAsync();
+            if (query == null)
+                throw new ArgumentException("Usuário não encontrado");
 
-            if (query.Count > 0)
-                throw new ArgumentException("Esta pessoa já está cadastrada");
-
+            return query;
         }
 
-        public async Task CriarRoles()
-        {
-            var roles = await _context.Roles.Select(x => x.Name).ToListAsync();
-            lock (_context)
-            {
-                var contemRoles = roles.Any(x => x == "ENCARREGADO" || x == "REGIONAL" || x == "INSTRUTOR");
-
-                if (!contemRoles)
-                {
-                    Role roleEncarregado = new Role();
-                    roleEncarregado.Name = "ENCARREGADO";
-                    roleEncarregado.NormalizedName = "ENCARREGADO";
-                    Role roleRegional = new Role();
-                    roleRegional.Name = "REGIONAL";
-                    roleRegional.NormalizedName = "REGIONAL";
-                    Role roleInstrutor = new Role();
-                    roleInstrutor.Name = "INSTRUTOR";
-                    roleInstrutor.NormalizedName = "INSTRUTOR";
-                    _context.Roles.Add(roleEncarregado);
-                    _context.SaveChangesAsync();
-                    _context.Roles.Add(roleRegional);
-                    _context.SaveChangesAsync();
-                    _context.Roles.Add(roleInstrutor);
-                    _context.SaveChangesAsync();
-
-                }
-            }
-
-        }
     }
 }

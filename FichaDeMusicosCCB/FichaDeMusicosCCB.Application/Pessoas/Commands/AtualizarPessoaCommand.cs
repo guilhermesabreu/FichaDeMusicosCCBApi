@@ -1,6 +1,11 @@
-﻿namespace FichaDeMusicosCCB.Domain.InputModels
+﻿using FichaDeMusicosCCB.Domain.InputModels;
+using FichaDeMusicosCCB.Domain.ViewModels;
+using Mapster;
+using MediatR;
+
+namespace FichaDeMusicosCCB.Application.Pessoas.Commands
 {
-    public class PessoaInputModel
+    public class AtualizarPessoaCommand : IRequest<PessoaViewModel>
     {
         public long Id { get; set; }
         public string? UserName { get; set; }
@@ -18,5 +23,9 @@
         public string? Comum { get; set; }
         public string? Instrumento { get; set; }
         public string? Condicao { get; set; }
+        public AtualizarPessoaCommand(PessoaInputModel input)
+        {
+            input.Adapt(this);
+        }
     }
 }

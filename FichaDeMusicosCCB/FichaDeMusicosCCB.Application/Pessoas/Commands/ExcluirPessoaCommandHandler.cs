@@ -1,0 +1,62 @@
+﻿using FichaDeMusicosCCB.Domain.Commoms;
+using FichaDeMusicosCCB.Domain.Entities;
+using FichaDeMusicosCCB.Domain.Entities.Identity;
+using FichaDeMusicosCCB.Domain.ViewModels;
+using FichaDeMusicosCCB.Persistence;
+using Mapster;
+using MediatR;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
+namespace FichaDeMusicosCCB.Application.Pessoas.Commands
+{
+    public class ExcluirPessoaCommandHandler : IRequestHandler<ExcluirPessoaCommand, bool>
+    {
+        private readonly FichaDeMusicosCCBContext _context;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
+        public ExcluirPessoaCommandHandler(FichaDeMusicosCCBContext context, UserManager<User> userManager, SignInManager<User> signInManager)
+        {
+            _signInManager = signInManager;
+            _userManager = userManager;
+            _context = context;
+        }
+        public async Task<bool> Handle(ExcluirPessoaCommand request, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var pessoaEncontrada = await UsuarioEncontrado(request.UserName);
+                var exclusao = await ExcluirPessoa(pessoaEncontrada);
+                return exclusao;
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(Utils.MensagemErro500Padrao);
+            }
+
+        }
+
+        public async Task<bool> ExcluirPessoa(User user)
+        {
+            _context.Remove(user);
+            if (await _context.SaveChangesAsync() == 1)
+                return true;
+
+            return false;
+        }
+
+        public async Task<User> UsuarioEncontrado(string userName)
+        {
+            var query = await _context.Users.AsNoTracking().Where(x => x.UserName == userName).FirstOrDefaultAsync();
+            if (query == null)
+                throw new ArgumentException("Usuário não encontrado");
+
+            return query;
+        }
+
+    }
+}

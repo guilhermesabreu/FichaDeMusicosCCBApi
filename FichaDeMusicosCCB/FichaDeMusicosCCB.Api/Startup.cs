@@ -72,7 +72,6 @@ namespace FichaDeMusicosCCB.Api
                 }
              );
 
-
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;

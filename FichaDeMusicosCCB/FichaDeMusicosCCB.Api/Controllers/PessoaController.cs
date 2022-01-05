@@ -27,12 +27,33 @@ namespace FichaDeMusicosCCB.Api.Controllers
             return Ok("Logado com sucesso");
         }
 
-        [HttpPost("cadastrar-pessoa")]
-        public async Task<IActionResult> CadastrarPessoa(PessoaInputModel input)
+        [HttpPost]
+        public async Task<IActionResult> CadastrarPessoa([FromBody] PessoaInputModel input)
         {
             var comando = new CadastrarPessoaCommand(input);
             var result = await _mediator.Send(comando);
             return Ok(result);
+        }
+
+        [HttpPut()]
+        public async Task<IActionResult> AtualizarPessoa([FromBody] PessoaInputModel input)
+        {
+            var comando = new AtualizarPessoaCommand(input);
+            var result = await _mediator.Send(comando);
+            return Ok(result);
+        }
+
+        [HttpDelete("{user_name}")]
+        public async Task<IActionResult> ExcluirPessoa(string user_name)
+        {
+            var comando = new ExcluirPessoaCommand(user_name);
+            var result = await _mediator.Send(comando);
+            if (result)
+            {
+                return Ok();
+            }
+
+            return BadRequest();
         }
     }
 }

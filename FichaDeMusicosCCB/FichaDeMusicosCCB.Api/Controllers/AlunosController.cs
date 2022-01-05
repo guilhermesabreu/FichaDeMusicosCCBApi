@@ -20,7 +20,7 @@ namespace FichaDeMusicosCCB.Api.Controllers
             _logger = logger;
         }
 
-        [HttpGet("instrutor")]
+        [HttpGet("por-instrutor")]
         public async Task<IActionResult> ConsultarAlunosPorInstrutor([FromQuery] AlunoQueryParameter parameters)
         {
             var query = new ConsultarAlunosPorInstrutorQuery(parameters);
@@ -28,7 +28,7 @@ namespace FichaDeMusicosCCB.Api.Controllers
             return Ok(response);
         }
 
-        [HttpGet("encarregado")]
+        [HttpGet("por-encarregado")]
         public async Task<IActionResult> ConsultarAlunosPorEncarregado([FromQuery] AlunoQueryParameter parameters)
         {
             var query = new ConsultarAlunosPorInstrutorQuery(parameters);
@@ -36,7 +36,7 @@ namespace FichaDeMusicosCCB.Api.Controllers
             return Ok(response);
         }
 
-        [HttpGet("encarregado-regional")]
+        [HttpGet("por-encarregado-regional")]
         public async Task<IActionResult> ConsultarAlunosPorEncarregadoRegional([FromQuery] AlunoQueryParameter parameters)
         {
             var query = new ConsultarAlunosPorInstrutorQuery(parameters);
