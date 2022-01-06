@@ -3,12 +3,12 @@ using FichaDeMusicosCCB.Domain.ViewModels;
 using Mapster;
 using MediatR;
 
-namespace FichaDeMusicosCCB.Application.Alunos.Query
+namespace FichaDeMusicosCCB.Application.Pessoas.Query
 {
-    public class ConsultarAlunosPorInstrutorQuery : IRequest<List<PessoaViewModel>>
+    public class ConsultarPessoasPorInstrutorQuery : IRequest<List<PessoaViewModel>>
     {
         public string ApelidoInstrutor { get; set; }
-        public ConsultarAlunosPorInstrutorQuery(AlunoQueryParameter parameters)
+        public ConsultarPessoasPorInstrutorQuery(PessoaQueryParameter parameters)
         {
             parameters.Adapt(this);
         }

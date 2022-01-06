@@ -1,6 +1,8 @@
 using FichaDeMusicosCCB.Application.Pessoas.Commands;
+using FichaDeMusicosCCB.Application.Pessoas.Query;
 using FichaDeMusicosCCB.Domain.Entities.Identity;
 using FichaDeMusicosCCB.Domain.InputModels;
+using FichaDeMusicosCCB.Domain.QueryParameters;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -21,10 +23,36 @@ namespace FichaDeMusicosCCB.Api.Controllers
             _logger = logger;
         }
 
-        [HttpGet("login")]
-        public IActionResult Login()
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] CredencialInputModel input)
         {
-            return Ok("Logado com sucesso");
+            var comando = new LogarPessoaCommand(input);
+            var response = await _mediator.Send(comando);
+            return Ok(response);
+        }
+
+        [HttpGet("por-instrutor")]
+        public async Task<IActionResult> ConsultarPessoasPorInstrutor([FromQuery] PessoaQueryParameter parameters)
+        {
+            var query = new ConsultarPessoasPorInstrutorQuery(parameters);
+            var response = await _mediator.Send(query);
+            return Ok(response);
+        }
+
+        [HttpGet("por-encarregado")]
+        public async Task<IActionResult> ConsultarPessoasPorEncarregado([FromQuery] PessoaQueryParameter parameters)
+        {
+            var query = new ConsultarPessoasPorEncarregadoQuery(parameters);
+            var response = await _mediator.Send(query);
+            return Ok(response);
+        }
+
+        [HttpGet("por-encarregado-regional")]
+        public async Task<IActionResult> ConsultarPessoasPorEncarregadoRegional([FromQuery] PessoaQueryParameter parameters)
+        {
+            var query = new ConsultarPessoasPorEncarregadoRegionalQuery(parameters);
+            var response = await _mediator.Send(query);
+            return Ok(response);
         }
 
         [HttpPost]

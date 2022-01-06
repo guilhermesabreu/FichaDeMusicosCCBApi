@@ -1,6 +1,3 @@
-using FichaDeMusicosCCB.Application.Alunos.Query;
-using FichaDeMusicosCCB.Domain.InputModels;
-using FichaDeMusicosCCB.Domain.QueryParameters;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,28 +17,5 @@ namespace FichaDeMusicosCCB.Api.Controllers
             _logger = logger;
         }
 
-        [HttpGet("por-instrutor")]
-        public async Task<IActionResult> ConsultarAlunosPorInstrutor([FromQuery] AlunoQueryParameter parameters)
-        {
-            var query = new ConsultarAlunosPorInstrutorQuery(parameters);
-            var response = await _mediator.Send(query);
-            return Ok(response);
-        }
-
-        [HttpGet("por-encarregado")]
-        public async Task<IActionResult> ConsultarAlunosPorEncarregado([FromQuery] AlunoQueryParameter parameters)
-        {
-            var query = new ConsultarAlunosPorInstrutorQuery(parameters);
-            var response = await _mediator.Send(query);
-            return Ok(response);
-        }
-
-        [HttpGet("por-encarregado-regional")]
-        public async Task<IActionResult> ConsultarAlunosPorEncarregadoRegional([FromQuery] AlunoQueryParameter parameters)
-        {
-            var query = new ConsultarAlunosPorInstrutorQuery(parameters);
-            var response = await _mediator.Send(query);
-            return Ok(response);
-        }
     }
 }
