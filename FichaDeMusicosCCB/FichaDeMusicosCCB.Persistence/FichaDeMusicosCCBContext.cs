@@ -12,6 +12,7 @@ namespace FichaDeMusicosCCB.Persistence
     {
         public FichaDeMusicosCCBContext(DbContextOptions<FichaDeMusicosCCBContext> options) : base(options) { }
 
+        public DbSet<PessoaOcorrencia> PessoaOcorrencias { get; set; }
         public DbSet<Ocorrencia> Ocorrencias { get; set; }
         public DbSet<Pessoa> Pessoas { get; set; }
         public DbSet<Hino> Hinos { get; set; }

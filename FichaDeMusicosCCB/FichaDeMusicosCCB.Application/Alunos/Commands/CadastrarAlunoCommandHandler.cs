@@ -8,25 +8,25 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace FichaDeMusicosCCB.Application.Pessoas.Commands
+namespace FichaDeMusicosCCB.Application.Alunos.Commands
 {
-    public class CadastrarPessoaCommandHandler : IRequestHandler<CadastrarPessoaCommand, PessoaViewModel>
+    public class CadastrarAlunoCommandHandler : IRequestHandler<CadastrarAlunoCommand, AlunoViewModel>
     {
         private readonly FichaDeMusicosCCBContext _context;
         private readonly UserManager<User> _userManager;
-        public CadastrarPessoaCommandHandler(FichaDeMusicosCCBContext context, UserManager<User> userManager)
+        public CadastrarAlunoCommandHandler(FichaDeMusicosCCBContext context, UserManager<User> userManager)
         {
             _userManager = userManager;
             _context = context;
         }
-        public async Task<PessoaViewModel> Handle(CadastrarPessoaCommand request, CancellationToken cancellationToken)
+        public async Task<AlunoViewModel> Handle(CadastrarAlunoCommand request, CancellationToken cancellationToken)
         {
             try
             {
                 #region MapearParametro
-                TypeAdapterConfig<CadastrarPessoaCommand, Pessoa>.NewConfig()
-                    .Map(dest => dest.User.UserName, src => src.UserName)
-                    .Map(dest => dest.User.Password, src => src.Password)
+                TypeAdapterConfig<CadastrarAlunoCommand, Pessoa>.NewConfig()
+                    .Map(dest => dest.User.UserName, src => Utils.NomeParaCredencial(src.Nome))
+                    .Map(dest => dest.User.Password, src => Utils.NomeParaCredencial(src.Nome))
                     .Map(dest => dest.NomePessoa, src => src.Nome)
                     .Map(dest => dest.ApelidoInstrutorPessoa, src => src.ApelidoInstrutor)
                     .Map(dest => dest.ApelidoEncarregadoPessoa, src => src.ApelidoEncarregado)
@@ -43,10 +43,9 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
                 #endregion
                 var pessoaEntity = request.Adapt<Pessoa>();
 
-                await CriarRoles();
-                await VerificaExistenciaPessoa(pessoaEntity);
+                await VerificaExistenciaAluno(pessoaEntity);
                 #region Mapear Response
-                TypeAdapterConfig<Pessoa, PessoaViewModel>.NewConfig()
+                TypeAdapterConfig<Pessoa, AlunoViewModel>.NewConfig()
                     .Map(dest => dest.Nome, src => src.NomePessoa)
                     .Map(dest => dest.ApelidoInstrutor, src => src.ApelidoInstrutorPessoa)
                     .Map(dest => dest.ApelidoEncarregado, src => src.ApelidoEncarregadoPessoa)
@@ -62,8 +61,8 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
                     .Map(dest => dest.Condicao, src => src.CondicaoPessoa);
                 #endregion
 
-                var pessoaResponse = await PessoaCriada(pessoaEntity);
-                return pessoaResponse.Adapt<PessoaViewModel>();
+                var pessoaResponse = await AlunoCriado(pessoaEntity);
+                return pessoaResponse.Adapt<AlunoViewModel>();
             }
             catch (ArgumentException ex)
             {
@@ -76,77 +75,30 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
 
         }
 
-        public async Task<Pessoa> PessoaCriada(Pessoa pessoa)
+        public async Task<Pessoa> AlunoCriado(Pessoa pessoa)
         {
             pessoa.User.Role = pessoa.CondicaoPessoa.ToUpper();
             var result = await _userManager.CreateAsync(pessoa.User, pessoa.User.Password);
             var resultRole = await _userManager.AddToRoleAsync(pessoa.User, pessoa.User.Role);
             if (!resultRole.Succeeded)
-                throw new ArgumentException("Não foi possível criar a credencial desta pessoa");
+                throw new ArgumentException("Não foi possível criar a credencial deste aluno");
 
             _context.Pessoas.Add(pessoa);
             if (_context.SaveChanges().Equals(0) || !result.Succeeded)
-                throw new ArgumentException("Não foi possível criar esta pessoa, verifique os dados inseridos");
+                throw new ArgumentException("Não foi possível criar este aluno, verifique os dados inseridos");
 
             return pessoa;
 
         }
 
-
-        public async Task VerificaExistenciaPessoa(Pessoa pessoa)
+        public async Task VerificaExistenciaAluno(Pessoa pessoa)
         {
-
-            var usuario = await _context.Pessoas.Where(x => x.NomePessoa == pessoa.NomePessoa
+            var query = await _context.Pessoas.Where(x => x.NomePessoa == pessoa.NomePessoa
                                                     || x.EmailPessoa == pessoa.EmailPessoa
                                                     || x.CelularPessoa == pessoa.CelularPessoa).ToListAsync();
-            if (usuario.Count > 0)
-                throw new ArgumentException("Os dados desta pessoa já está cadastrado em outra pessoa");
 
-            var credencial = await _context.Users.Where(x => x.UserName == pessoa.User.UserName).ToListAsync();
-            if (credencial.Count > 0)
-                throw new ArgumentException("Esta pessoa já está cadastrada");
-
-        }
-
-        public async Task CriarRoles()
-        {
-            var roles = await _context.Roles.Select(x => x.Name).ToListAsync();
-            lock (_context)
-            {
-
-                if (!roles.Any(x => x == "ENCARREGADO"))
-                {
-                    Role role = new Role();
-                    role.Name = "ENCARREGADO";
-                    role.NormalizedName = "ENCARREGADO";
-                    _context.Roles.Add(role);
-                    _context.SaveChangesAsync();
-                }
-                if (!roles.Any(x => x == "REGIONAL"))
-                {
-                    Role role = new Role();
-                    role.Name = "REGIONAL";
-                    role.NormalizedName = "REGIONAL";
-                    _context.Roles.Add(role);
-                    _context.SaveChangesAsync();
-                }
-                if (!roles.Any(x => x == "INSTRUTOR"))
-                {
-                    Role role = new Role();
-                    role.Name = "INSTRUTOR";
-                    role.NormalizedName = "INSTRUTOR";
-                    _context.Roles.Add(role);
-                    _context.SaveChangesAsync();
-                }
-                if (!roles.Any(x => x == "ALUNO"))
-                {
-                    Role role = new Role();
-                    role.Name = "ALUNO";
-                    role.NormalizedName = "ALUNO";
-                    _context.Roles.Add(role);
-                    _context.SaveChangesAsync();
-                }
-            }
+            if (query.Count > 0)
+                throw new ArgumentException("Os dados deste aluno já está cadastrado em outra pessoa");
 
         }
     }

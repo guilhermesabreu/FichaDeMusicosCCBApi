@@ -63,7 +63,7 @@ namespace FichaDeMusicosCCB.Api.Controllers
             return Ok(result);
         }
 
-        [HttpPut()]
+        [HttpPut]
         public async Task<IActionResult> AtualizarPessoa([FromBody] PessoaInputModel input)
         {
             var comando = new AtualizarPessoaCommand(input);
