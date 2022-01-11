@@ -12,13 +12,13 @@ namespace FichaDeMusicosCCB.Persistence
     {
         public FichaDeMusicosCCBContext(DbContextOptions<FichaDeMusicosCCBContext> options) : base(options) { }
 
-        public DbSet<PessoaOcorrencia> PessoaOcorrencias { get; set; }
         public DbSet<Ocorrencia> Ocorrencias { get; set; }
         public DbSet<Pessoa> Pessoas { get; set; }
         public DbSet<Hino> Hinos { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
+
         {
             base.OnModelCreating(modelBuilder);
 
@@ -54,27 +54,6 @@ namespace FichaDeMusicosCCB.Persistence
             modelBuilder.Entity<Ocorrencia>()
                 .HasKey(o => o.IdOcorrencia);
             #endregion
-
-            #region 1 Ocorrencia para N Hinos
-            modelBuilder.Entity<Ocorrencia>()
-                .HasMany(h => h.Hinos)
-                .WithOne(h => h.Ocorrencia);
-            #endregion
-
-            #region N Ocorrências para N Pessoas
-            modelBuilder.Entity<PessoaOcorrencia>()
-            .HasKey(bc => new { bc.IdPessoa, bc.IdOcorrencia });
-
-            modelBuilder.Entity<PessoaOcorrencia>()
-                .HasOne(bc => bc.Pessoa)
-                .WithMany(b => b.PessoaOcorrencias)
-                .HasForeignKey(bc => bc.IdPessoa);
-
-            modelBuilder.Entity<PessoaOcorrencia>()
-                .HasOne(bc => bc.Ocorrencia)
-                .WithMany(c => c.PessoaOcorrencias)
-                .HasForeignKey(bc => bc.IdOcorrencia);
-            #endregion
             #endregion
 
             #region Hino
@@ -88,6 +67,18 @@ namespace FichaDeMusicosCCB.Persistence
             #region Chave Primária
             modelBuilder.Entity<Pessoa>()
                 .HasKey(h => h.IdPessoa);
+            #endregion
+
+            #region 1 Pessoa para N Ocorrencias
+            modelBuilder.Entity<Pessoa>()
+                .HasMany(h => h.Ocorrencias)
+                .WithOne(h => h.Pessoa);
+            #endregion
+
+            #region 1 Pessoa para N Hinos
+            modelBuilder.Entity<Pessoa>()
+                .HasMany(h => h.Hinos)
+                .WithOne(h => h.Pessoa);
             #endregion
             #endregion
 

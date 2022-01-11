@@ -19,7 +19,17 @@ namespace FichaDeMusicosCCB.Domain.Commoms
 
             return nome.Split(' ').First() + nome.Split(' ').Last();
         }
+
+        public static string DataString(DateTime? data)
+        {
+            if (data != null)
+                return data.Value.Date.ToString("dd/MM/yyyy");
+
+            else
+                return "";
+
+        }
     }
 
-    
+
 }

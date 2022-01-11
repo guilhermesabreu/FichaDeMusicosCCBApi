@@ -1,10 +1,8 @@
 using FichaDeMusicosCCB.Application.Pessoas.Commands;
 using FichaDeMusicosCCB.Application.Pessoas.Query;
-using FichaDeMusicosCCB.Domain.Entities.Identity;
 using FichaDeMusicosCCB.Domain.InputModels;
 using FichaDeMusicosCCB.Domain.QueryParameters;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FichaDeMusicosCCB.Api.Controllers
@@ -34,33 +32,17 @@ namespace FichaDeMusicosCCB.Api.Controllers
         [HttpGet("por-instrutor")]
         public async Task<IActionResult> ConsultarPessoasPorInstrutor([FromQuery] PessoaQueryParameter parameters)
         {
-            var query = new ConsultarPessoasPorInstrutorQuery(parameters);
+            var query = new ConsultarPessoasPorApelidoECondicaoQuery(parameters);
             var response = await _mediator.Send(query);
             return Ok(response);
         }
 
-        [HttpGet("por-encarregado")]
+        [HttpGet("por-apelido-e-condicao")]
         public async Task<IActionResult> ConsultarPessoasPorEncarregado([FromQuery] PessoaQueryParameter parameters)
         {
-            var query = new ConsultarPessoasPorEncarregadoQuery(parameters);
+            var query = new ConsultarPessoasPorApelidoECondicaoQuery(parameters);
             var response = await _mediator.Send(query);
             return Ok(response);
-        }
-
-        [HttpGet("por-encarregado-regional")]
-        public async Task<IActionResult> ConsultarPessoasPorEncarregadoRegional([FromQuery] PessoaQueryParameter parameters)
-        {
-            var query = new ConsultarPessoasPorEncarregadoRegionalQuery(parameters);
-            var response = await _mediator.Send(query);
-            return Ok(response);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> CadastrarPessoa([FromBody] PessoaInputModel input)
-        {
-            var comando = new CadastrarPessoaCommand(input);
-            var result = await _mediator.Send(comando);
-            return Ok(result);
         }
 
         [HttpPut]

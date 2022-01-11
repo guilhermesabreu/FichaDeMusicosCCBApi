@@ -7,7 +7,8 @@
         public int NumeroLicaoOcorrencia { get; set; }
         public string? MetodoOcorrencia { get; set; }
         public string? ObservacaoOcorrencia { get; set; }
-        public ICollection<PessoaOcorrencia> PessoaOcorrencias { get; set; }
-        public ICollection<Hino> Hinos { get; set; }
+        public int IdPessoa { get; set; }
+        public Pessoa Pessoa { get; set; }
+        
     }
 }

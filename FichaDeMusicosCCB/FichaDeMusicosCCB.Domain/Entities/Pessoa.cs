@@ -18,7 +18,8 @@ namespace FichaDeMusicosCCB.Domain.Entities
         public string? ComumPessoa { get; set; }
         public string? InstrumentoPessoa { get; set; }
         public string? CondicaoPessoa { get; set; }
-        public ICollection<PessoaOcorrencia> PessoaOcorrencias { get; set; }
+        public ICollection<Ocorrencia> Ocorrencias { get; set; }
+        public ICollection<Hino> Hinos { get; set; }
         public int IdUser { get; set; }
         public User User { get; set; }
     }

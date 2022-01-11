@@ -22,6 +22,5 @@ namespace FichaDeMusicosCCB.Domain.ViewModels
         public string? Comum { get; set; }
         public string? Instrumento { get; set; }
         public string? Condicao { get; set; }
-        public ICollection<OcorrenciaViewModel> Ocorrencias { get; set; }
     }
 }

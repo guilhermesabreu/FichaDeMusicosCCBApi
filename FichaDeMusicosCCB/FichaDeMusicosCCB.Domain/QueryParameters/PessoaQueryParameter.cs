@@ -6,5 +6,6 @@ namespace FichaDeMusicosCCB.Domain.QueryParameters
         public string? ApelidoInstrutor { get; set; }
         public string? ApelidoEncarregado { get; set; }
         public string? ApelidoEncarregadoRegional { get; set; }
+        public string? Condicao { get; set; }
     }
 }
