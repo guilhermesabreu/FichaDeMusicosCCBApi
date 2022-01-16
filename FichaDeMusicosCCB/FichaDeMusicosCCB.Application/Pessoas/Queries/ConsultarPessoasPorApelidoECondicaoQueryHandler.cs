@@ -18,6 +18,7 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Query
         {
             #region Mapeamento
             TypeAdapterConfig<Pessoa, PessoaViewModel>.NewConfig()
+                    .Map(dest => dest.Id, src => src.IdPessoa)
                     .Map(dest => dest.Nome, src => src.NomePessoa)
                     .Map(dest => dest.ApelidoInstrutor, src => src.ApelidoInstrutorPessoa)
                     .Map(dest => dest.ApelidoEncarregado, src => src.ApelidoEncarregadoPessoa)
@@ -40,11 +41,17 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Query
 
             //Observar se irá trazer os dados da ocorrência e hinos
             #endregion
+            if (string.IsNullOrEmpty(request.ApelidoEncarregado) && string.IsNullOrEmpty(request.ApelidoEncarregadoRegional) && string.IsNullOrEmpty(request.ApelidoInstrutor))
+                throw new ArgumentException("Informe o apelido do encarregado/instrutor ou encarregado regional.");
+
+            if (string.IsNullOrEmpty(request.ApelidoEncarregado) && string.IsNullOrEmpty(request.ApelidoEncarregadoRegional) && string.IsNullOrEmpty(request.ApelidoInstrutor))
+                throw new ArgumentException("Informe a condição que queira filtrar.");
+
             var pessoas = _context.Pessoas.AsQueryable();
             var pessoasPorInstrutor = pessoas.Where(x => (x.ApelidoInstrutorPessoa.Equals(request.ApelidoInstrutor)
                                                       || x.ApelidoEncarregadoPessoa.Equals(request.ApelidoEncarregado)
                                                       || x.ApelidoEncRegionalPessoa.Equals(request.ApelidoEncarregadoRegional))
-                                                      && (x.CondicaoPessoa.Equals(request.Condicao)));
+                                                      && x.CondicaoPessoa.Equals(request.Condicao));
             return pessoasPorInstrutor.Adapt<List<PessoaViewModel>>();
         }
 

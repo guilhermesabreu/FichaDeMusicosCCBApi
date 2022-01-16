@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Ocorrencias\Queries\" />
     <Folder Include="Alunos\Queries\" />
   </ItemGroup>
 

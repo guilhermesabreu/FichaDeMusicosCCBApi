@@ -10,9 +10,9 @@ namespace FichaDeMusicosCCB.Api.Controllers
     public class AlunosController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly ILogger<PessoaController> _logger;
+        private readonly ILogger<AlunosController> _logger;
 
-        public AlunosController(IMediator mediator, ILogger<PessoaController> logger)
+        public AlunosController(IMediator mediator, ILogger<AlunosController> logger)
         {
             _mediator = mediator;
             _logger = logger;

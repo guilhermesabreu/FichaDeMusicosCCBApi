@@ -29,15 +29,7 @@ namespace FichaDeMusicosCCB.Api.Controllers
             return Ok(response);
         }
 
-        [HttpGet("por-instrutor")]
-        public async Task<IActionResult> ConsultarPessoasPorInstrutor([FromQuery] PessoaQueryParameter parameters)
-        {
-            var query = new ConsultarPessoasPorApelidoECondicaoQuery(parameters);
-            var response = await _mediator.Send(query);
-            return Ok(response);
-        }
-
-        [HttpGet("por-apelido-e-condicao")]
+        [HttpGet("por-condicao")]
         public async Task<IActionResult> ConsultarPessoasPorEncarregado([FromQuery] PessoaQueryParameter parameters)
         {
             var query = new ConsultarPessoasPorApelidoECondicaoQuery(parameters);
