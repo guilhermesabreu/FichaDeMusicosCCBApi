@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FichaDeMusicosCCB.Api.Controllers
 {
-    [Route("api/v1/alunos")]
+    [ApiVersion("1")]
+    [Route("api/v{version:apiVersion}/alunos")]
     [ApiController]
     public class AlunosController : ControllerBase
     {

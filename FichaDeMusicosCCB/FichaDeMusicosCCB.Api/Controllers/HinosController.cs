@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FichaDeMusicosCCB.Api.Controllers
 {
-    [Route("api/v1/hinos")]
+    [ApiVersion("1")]
+    [Route("api/v{version:apiVersion}/hinos")]
     [ApiController]
     public class HinosController : ControllerBase
     {

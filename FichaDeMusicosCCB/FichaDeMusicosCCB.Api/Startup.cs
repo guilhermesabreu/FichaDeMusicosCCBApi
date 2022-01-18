@@ -8,10 +8,13 @@ using System.Text;
 using MediatR;
 using FichaDeMusicosCCB.Domain.Entities.Identity;
 using FichaDeMusicosCCB.Domain.Commoms;
+using Microsoft.AspNetCore.Rewrite;
+using Microsoft.OpenApi.Models;
+using Microsoft.Net.Http.Headers;
 
 namespace FichaDeMusicosCCB.Api
 {
-    public class Startup : IStartup
+    public class Startup
     {
         public IConfiguration Configuration { get; }
 
@@ -20,18 +23,47 @@ namespace FichaDeMusicosCCB.Api
             Configuration = configuration;
         }
 
-        public void Configure(WebApplication app, IWebHostEnvironment environment)
+        public void Configure(IApplicationBuilder app, Microsoft.AspNetCore.Hosting.IHostingEnvironment env)
         {
-            if (app.Environment.IsDevelopment())
+            if (env.IsDevelopment())
             {
-                app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseDeveloperExceptionPage();
             }
 
             app.UseHttpsRedirection();
-            app.UseAuthentication();
+
+            app.UseRouting();
+
+            app.UseCors(builder =>
+               builder.AllowAnyMethod()
+                      .AllowAnyHeader()
+                      .AllowAnyOrigin());
+            // allow credentials
+
+            app.UseSwagger();
+
+            app.UseDeveloperExceptionPage();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json",
+                    "Agenda Online - v1");
+            });
+
+            var option = new RewriteOptions();
+            option.AddRedirect("^$", "swagger");
+            app.UseRewriter(option);
+
             app.UseAuthorization();
-            app.MapControllers();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapControllerRoute("DefaultApi", "{controller=value}/{id?}");
+            });
+
+            app.UseStaticFiles();
+
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -98,31 +130,35 @@ namespace FichaDeMusicosCCB.Api
                 o.ExpireTimeSpan = TimeSpan.FromMinutes(5);
             });
 
+            services.AddMvc(options =>
+            {
+                options.RespectBrowserAcceptHeader = true;
+                options.FormatterMappings.SetMediaTypeMappingForFormat("xml", MediaTypeHeaderValue.Parse("application/xml"));
+                options.FormatterMappings.SetMediaTypeMappingForFormat("json", MediaTypeHeaderValue.Parse("application/json"));
+            })
+            .AddXmlSerializerFormatters();
+
+
+            //Versionning API
+            services.AddApiVersioning();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1",
+                    new OpenApiInfo
+                    {
+                        Title = "Ficha de Músicos CCB",
+                        Version = "v1",
+                        Description = "API da Ficha de Músicos CCB - v1",
+                        Contact = new OpenApiContact
+                        {
+                            Name = "Guilherme Abreu",
+                            Url = new Uri("https://github.com/guilhermesabreu")
+                        }
+                    });
+                c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
+            });
         }
     }
-
-    public interface IStartup
-    {
-        IConfiguration Configuration { get; }
-        void Configure(WebApplication app, IWebHostEnvironment environment);
-        void ConfigureServices(IServiceCollection services);
-    }
-
-    public static class StartupExtensions
-    {
-        public static WebApplicationBuilder UseStartup<TStartup>(this WebApplicationBuilder webAppBuilder) where TStartup : IStartup
-        {
-            var startup = Activator.CreateInstance(typeof(TStartup), webAppBuilder.Configuration) as IStartup;
-            if (startup == null) throw new ArgumentException("Classe Startup.cs Inválida!");
-
-            startup.ConfigureServices(webAppBuilder.Services);
-
-            var app = webAppBuilder.Build();
-            startup.Configure(app, app.Environment);
-
-            app.Run();
-
-            return webAppBuilder;
-        }
-    }
+    
 }

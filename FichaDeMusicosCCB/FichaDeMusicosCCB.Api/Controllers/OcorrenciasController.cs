@@ -7,7 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FichaDeMusicosCCB.Api.Controllers
 {
-    [Route("api/v1/ocorrencias")]
+    [ApiVersion("1")]
+    [Route("api/v{version:apiVersion}/ocorrencias")]
     [ApiController]
     public class OcorrenciasController : ControllerBase
     {
