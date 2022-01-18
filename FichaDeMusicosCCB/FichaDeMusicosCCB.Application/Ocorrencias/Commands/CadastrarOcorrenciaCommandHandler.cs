@@ -40,8 +40,8 @@ namespace FichaDeMusicosCCB.Application.Ocorrencias.Commands
                     .Map(dest => dest.ObservacaoInstrutor, src => src.ObservacaoOcorrencia);
                 #endregion
 
-                var pessoaResponse = await OcorrenciaCriada(ocorrenciaEntity);
-                return pessoaResponse.Adapt<OcorrenciaViewModel>();
+                var ocorrenciaResponse = await OcorrenciaCriada(ocorrenciaEntity);
+                return ocorrenciaResponse.Adapt<OcorrenciaViewModel>();
             }
             catch (ArgumentException ex)
             {
@@ -66,10 +66,9 @@ namespace FichaDeMusicosCCB.Application.Ocorrencias.Commands
 
         public async Task<Ocorrencia> VerificaExistenciaOcorrencia(Ocorrencia ocorrencia)
         {
-            var ocorrenciaEntity = await _context.Ocorrencias.Where(x => x.MetodoOcorrencia == ocorrencia.MetodoOcorrencia
+            var ocorrenciaEntity = await _context.Ocorrencias.AsNoTracking().Where(x => x.MetodoOcorrencia == ocorrencia.MetodoOcorrencia
                                                     && x.NumeroLicaoOcorrencia == ocorrencia.NumeroLicaoOcorrencia
                                                     && x.IdPessoa == ocorrencia.IdPessoa).ToListAsync();
-
 
             var pessoaAluna = await _context.Pessoas.Where(x => x.IdPessoa == ocorrencia.IdPessoa && x.CondicaoPessoa.Equals("aluno")).FirstOrDefaultAsync();
             if(pessoaAluna == null)

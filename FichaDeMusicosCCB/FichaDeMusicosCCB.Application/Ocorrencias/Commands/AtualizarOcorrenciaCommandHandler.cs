@@ -13,10 +13,8 @@ namespace FichaDeMusicosCCB.Application.Ocorrencias.Commands
     public class AtualizarOcorrenciaCommandHandler : IRequestHandler<AtualizarOcorrenciaCommand, OcorrenciaViewModel>
     {
         private readonly FichaDeMusicosCCBContext _context;
-        private readonly UserManager<User> _userManager;
-        public AtualizarOcorrenciaCommandHandler(FichaDeMusicosCCBContext context, UserManager<User> userManager)
+        public AtualizarOcorrenciaCommandHandler(FichaDeMusicosCCBContext context)
         {
-            _userManager = userManager;
             _context = context;
         }
         public async Task<OcorrenciaViewModel> Handle(AtualizarOcorrenciaCommand request, CancellationToken cancellationToken)

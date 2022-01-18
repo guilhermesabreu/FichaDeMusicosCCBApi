@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using MediatR;
 using FichaDeMusicosCCB.Domain.Entities.Identity;
+using FichaDeMusicosCCB.Domain.Commoms;
 
 namespace FichaDeMusicosCCB.Api
 {
@@ -28,6 +29,7 @@ namespace FichaDeMusicosCCB.Api
             }
 
             app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();
         }
@@ -57,9 +59,15 @@ namespace FichaDeMusicosCCB.Api
             builder.AddRoleManager<RoleManager<Role>>();
             builder.AddSignInManager<SignInManager<User>>();
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
                 {
+                    options.RequireHttpsMetadata = false;
+                    options.SaveToken = true;
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
@@ -70,14 +78,7 @@ namespace FichaDeMusicosCCB.Api
                     };
 
                 }
-             );
-
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
-                options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
-                options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
-            })
+             )
             .AddCookie(IdentityConstants.ExternalScheme, o =>
             {
                 o.Cookie.Name = IdentityConstants.ExternalScheme;
@@ -96,6 +97,7 @@ namespace FichaDeMusicosCCB.Api
                 o.Cookie.Name = IdentityConstants.TwoFactorUserIdScheme;
                 o.ExpireTimeSpan = TimeSpan.FromMinutes(5);
             });
+
         }
     }
 
@@ -108,7 +110,7 @@ namespace FichaDeMusicosCCB.Api
 
     public static class StartupExtensions
     {
-        public static WebApplicationBuilder UseStartup<TStartup>(this WebApplicationBuilder webAppBuilder) where TStartup: IStartup
+        public static WebApplicationBuilder UseStartup<TStartup>(this WebApplicationBuilder webAppBuilder) where TStartup : IStartup
         {
             var startup = Activator.CreateInstance(typeof(TStartup), webAppBuilder.Configuration) as IStartup;
             if (startup == null) throw new ArgumentException("Classe Startup.cs Inválida!");

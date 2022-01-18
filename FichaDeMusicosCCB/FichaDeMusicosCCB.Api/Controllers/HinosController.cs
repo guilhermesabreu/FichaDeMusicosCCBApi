@@ -1,5 +1,4 @@
-using FichaDeMusicosCCB.Application.Alunos.Commands;
-using FichaDeMusicosCCB.Application.Ocorrencias.Commands;
+using FichaDeMusicosCCB.Application.Hinos.Commands;
 using FichaDeMusicosCCB.Domain.InputModels;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -7,14 +6,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FichaDeMusicosCCB.Api.Controllers
 {
-    [Route("api/v1/ocorrencias")]
+    [Route("api/v1/hinos")]
     [ApiController]
-    public class OcorrenciasController : ControllerBase
+    public class HinosController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly ILogger<OcorrenciasController> _logger;
+        private readonly ILogger<HinosController> _logger;
 
-        public OcorrenciasController(IMediator mediator, ILogger<OcorrenciasController> logger)
+        public HinosController(IMediator mediator, ILogger<HinosController> logger)
         {
             _mediator = mediator;
             _logger = logger;
@@ -22,27 +21,27 @@ namespace FichaDeMusicosCCB.Api.Controllers
 
         [HttpPost]
         [Authorize(Roles = "ENCARREGADO,REGIONAL,INSTRUTOR")]
-        public async Task<IActionResult> CadastrarOcorrencia([FromBody] OcorrenciaInputModel input)
+        public async Task<IActionResult> CadastrarHino([FromBody] HinoInputModel input)
         {
-            var comando = new CadastrarOcorrenciaCommand(input);
+            var comando = new CadastrarHinoCommand(input);
             var response = await _mediator.Send(comando);
             return Ok(response);
         }
 
         [HttpPut]
         [Authorize(Roles = "ENCARREGADO,REGIONAL,INSTRUTOR")]
-        public async Task<IActionResult> AtualizarOcorrencia([FromBody] OcorrenciaInputModel input)
+        public async Task<IActionResult> AtualizarHino([FromBody] HinoInputModel input)
         {
-            var comando = new AtualizarOcorrenciaCommand(input);
+            var comando = new AtualizarHinoCommand(input);
             var response = await _mediator.Send(comando);
             return Ok(response);
         }
 
-        [HttpDelete("{id_ocorrencia}")]
+        [HttpDelete("{id_hino}")]
         [Authorize(Roles = "ENCARREGADO,REGIONAL,INSTRUTOR")]
-        public async Task<IActionResult> ExcluirOcorrencia(long id_ocorrencia)
+        public async Task<IActionResult> ExcluirHino(long id_hino)
         {
-            var comando = new ExcluirOcorrenciaCommand(id_ocorrencia);
+            var comando = new ExcluirHinoCommand(id_hino);
             var response = await _mediator.Send(comando);
             return Ok(response);
         }

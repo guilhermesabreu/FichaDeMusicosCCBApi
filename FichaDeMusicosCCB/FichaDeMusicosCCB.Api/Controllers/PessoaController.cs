@@ -3,13 +3,14 @@ using FichaDeMusicosCCB.Application.Pessoas.Query;
 using FichaDeMusicosCCB.Domain.InputModels;
 using FichaDeMusicosCCB.Domain.QueryParameters;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FichaDeMusicosCCB.Api.Controllers
 {
     [Route("api/v1/pessoas")]
     [ApiController]
-
     public class PessoaController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -22,6 +23,7 @@ namespace FichaDeMusicosCCB.Api.Controllers
         }
 
         [HttpPost("login")]
+        [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] CredencialInputModel input)
         {
             var comando = new LogarPessoaCommand(input);
@@ -30,6 +32,7 @@ namespace FichaDeMusicosCCB.Api.Controllers
         }
 
         [HttpGet("por-condicao")]
+        [Authorize(Roles = "ENCARREGADO,REGIONAL,INSTRUTOR")]
         public async Task<IActionResult> ConsultarPessoasPorEncarregado([FromQuery] PessoaQueryParameter parameters)
         {
             var query = new ConsultarPessoasPorApelidoECondicaoQuery(parameters);
@@ -38,6 +41,7 @@ namespace FichaDeMusicosCCB.Api.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "ENCARREGADO,REGIONAL,INSTRUTOR")]
         public async Task<IActionResult> AtualizarPessoa([FromBody] PessoaInputModel input)
         {
             var comando = new AtualizarPessoaCommand(input);
@@ -46,6 +50,7 @@ namespace FichaDeMusicosCCB.Api.Controllers
         }
 
         [HttpDelete("{user_name}")]
+        [Authorize(Roles = "ENCARREGADO,REGIONAL,INSTRUTOR")]
         public async Task<IActionResult> ExcluirPessoa(string user_name)
         {
             var comando = new ExcluirPessoaCommand(user_name);

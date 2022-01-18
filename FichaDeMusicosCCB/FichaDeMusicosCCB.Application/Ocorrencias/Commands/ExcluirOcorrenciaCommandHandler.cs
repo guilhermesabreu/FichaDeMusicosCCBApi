@@ -13,12 +13,8 @@ namespace FichaDeMusicosCCB.Application.Ocorrencias.Commands
     public class ExcluirOcorrenciaCommandHandler : IRequestHandler<ExcluirOcorrenciaCommand, bool>
     {
         private readonly FichaDeMusicosCCBContext _context;
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
-        public ExcluirOcorrenciaCommandHandler(FichaDeMusicosCCBContext context, UserManager<User> userManager, SignInManager<User> signInManager)
+        public ExcluirOcorrenciaCommandHandler(FichaDeMusicosCCBContext context)
         {
-            _signInManager = signInManager;
-            _userManager = userManager;
             _context = context;
         }
         public async Task<bool> Handle(ExcluirOcorrenciaCommand request, CancellationToken cancellationToken)

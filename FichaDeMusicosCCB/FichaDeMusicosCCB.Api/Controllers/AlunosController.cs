@@ -1,6 +1,7 @@
 using FichaDeMusicosCCB.Application.Alunos.Commands;
 using FichaDeMusicosCCB.Domain.InputModels;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FichaDeMusicosCCB.Api.Controllers
@@ -19,6 +20,7 @@ namespace FichaDeMusicosCCB.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "ENCARREGADO,REGIONAL,INSTRUTOR")]
         public async Task<IActionResult> CadastrarAluno([FromBody] AlunoInputModel input)
         {
             var comando = new CadastrarAlunoCommand(input);
@@ -27,6 +29,7 @@ namespace FichaDeMusicosCCB.Api.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "ENCARREGADO,REGIONAL,INSTRUTOR")]
         public async Task<IActionResult> AtualizarAluno([FromBody] AlunoInputModel input)
         {
             var comando = new AtualizarAlunoCommand(input);
@@ -35,6 +38,7 @@ namespace FichaDeMusicosCCB.Api.Controllers
         }
 
         [HttpDelete("{id_aluno}")]
+        [Authorize(Roles = "ENCARREGADO,REGIONAL,INSTRUTOR")]
         public async Task<IActionResult> ExcluirAluno(long id_aluno)
         {
             var comando = new ExcluirAlunoCommand(id_aluno);
