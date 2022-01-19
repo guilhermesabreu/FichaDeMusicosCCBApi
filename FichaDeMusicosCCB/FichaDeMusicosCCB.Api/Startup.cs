@@ -54,6 +54,7 @@ namespace FichaDeMusicosCCB.Api
             option.AddRedirect("^$", "swagger");
             app.UseRewriter(option);
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

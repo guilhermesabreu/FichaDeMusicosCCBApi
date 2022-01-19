@@ -34,7 +34,7 @@ namespace FichaDeMusicosCCB.Api.Controllers
 
         [HttpGet("por-condicao")]
         [Authorize(Roles = "ENCARREGADO,REGIONAL,INSTRUTOR")]
-        public async Task<IActionResult> ConsultarPessoasPorEncarregado([FromQuery] PessoaQueryParameter parameters)
+        public async Task<IActionResult> ConsultarPessoasPorCondicao([FromQuery] PessoaQueryParameter parameters)
         {
             var query = new ConsultarPessoasPorApelidoECondicaoQuery(parameters);
             var response = await _mediator.Send(query);
