@@ -15,7 +15,7 @@ using System.Text;
 
 namespace FichaDeMusicosCCB.Application.Pessoas.Commands
 {
-    public class LogarPessoaCommandHandler : IRequestHandler<LogarPessoaCommand, string>
+    public class LogarPessoaCommandHandler : IRequestHandler<LogarPessoaCommand, object>
     {
         private readonly FichaDeMusicosCCBContext _context;
         private readonly UserManager<User> _userManager;
@@ -28,7 +28,7 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
             _userManager = userManager;
             _context = context;
         }
-        public async Task<string> Handle(LogarPessoaCommand request, CancellationToken cancellationToken)
+        public async Task<dynamic> Handle(LogarPessoaCommand request, CancellationToken cancellationToken)
         {
             try
             {
@@ -65,7 +65,7 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
 
         }
 
-        public async Task<string> RecuperarToken(User user)
+        public async Task<dynamic> RecuperarToken(User user)
         {
             var role = await _userManager.GetRolesAsync(user);
             IdentityOptions _options = new IdentityOptions();
@@ -90,7 +90,7 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
             if (string.IsNullOrEmpty(token))
                 throw new ArgumentException("Token não registrado, não foi possível realizar o Login");
             
-            return token;
+            return new { token = token, user = user.UserName};
         }
 
     }
