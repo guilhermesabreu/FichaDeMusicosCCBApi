@@ -27,50 +27,107 @@ namespace FichaDeMusicosCCB.Api.Controllers
         [Authorize(Roles = "ENCARREGADO,REGIONAL,INSTRUTOR")]
         public async Task<IActionResult> CadastrarPessoa([FromBody] PessoaInputModel input)
         {
-            var comando = new CadastrarPessoaCommand(input);
-            var response = await _mediator.Send(comando);
-            return Ok(response);
+            try
+            {
+                var comando = new CadastrarPessoaCommand(input);
+                var response = await _mediator.Send(comando);
+                return Ok(response);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+            
         }
 
         [HttpPost("login")]
         [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] CredencialInputModel input)
         {
-            var comando = new LogarPessoaCommand(input);
-            var response = await _mediator.Send(comando);
-            return Ok(response);
+            try
+            {
+                var comando = new LogarPessoaCommand(input);
+                var response = await _mediator.Send(comando);
+                return Ok(response);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+
         }
 
         [HttpGet("por-condicao")]
         [Authorize(Roles = "ENCARREGADO,REGIONAL,INSTRUTOR")]
         public async Task<IActionResult> ConsultarPessoasPorCondicao([FromQuery] PessoaQueryParameter parameters)
         {
-            var query = new ConsultarPessoasPorApelidoECondicaoQuery(parameters);
-            var response = await _mediator.Send(query);
-            return Ok(response);
+            try
+            {
+                var query = new ConsultarPessoasPorApelidoECondicaoQuery(parameters);
+                var response = await _mediator.Send(query);
+                return Ok(response);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
         [HttpPut]
         [Authorize(Roles = "ENCARREGADO,REGIONAL,INSTRUTOR")]
         public async Task<IActionResult> AtualizarPessoa([FromBody] PessoaInputModel input)
         {
-            var comando = new AtualizarPessoaCommand(input);
-            var result = await _mediator.Send(comando);
-            return Ok(result);
+            try
+            {
+                var comando = new AtualizarPessoaCommand(input);
+                var result = await _mediator.Send(comando);
+                return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+
         }
 
         [HttpDelete("{user_name}")]
         [Authorize(Roles = "ENCARREGADO,REGIONAL,INSTRUTOR")]
         public async Task<IActionResult> ExcluirPessoa(string user_name)
         {
-            var comando = new ExcluirPessoaCommand(user_name);
-            var result = await _mediator.Send(comando);
-            if (result)
+            try
             {
-                return Ok();
+                var comando = new ExcluirPessoaCommand(user_name);
+                var result = await _mediator.Send(comando);
+                if (result)
+                {
+                    return Ok();
+                }
+                return StatusCode(500, "Internal Server Error");
             }
-
-            return BadRequest();
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
     }
 }

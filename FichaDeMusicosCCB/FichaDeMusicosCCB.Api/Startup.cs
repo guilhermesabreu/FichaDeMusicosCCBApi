@@ -47,7 +47,7 @@ namespace FichaDeMusicosCCB.Api
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json",
-                    "Agenda Online - v1");
+                    "Ficha de Músicos CCB - v1");
             });
 
             var option = new RewriteOptions();

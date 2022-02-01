@@ -24,27 +24,63 @@ namespace FichaDeMusicosCCB.Api.Controllers
         [Authorize(Roles = "ENCARREGADO,REGIONAL,INSTRUTOR")]
         public async Task<IActionResult> CadastrarHino([FromBody] HinoInputModel input)
         {
-            var comando = new CadastrarHinoCommand(input);
-            var response = await _mediator.Send(comando);
-            return Ok(response);
+            try
+            {
+                var comando = new CadastrarHinoCommand(input);
+                var response = await _mediator.Send(comando);
+                return Ok(response);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+          
         }
 
         [HttpPut]
         [Authorize(Roles = "ENCARREGADO,REGIONAL,INSTRUTOR")]
         public async Task<IActionResult> AtualizarHino([FromBody] HinoInputModel input)
         {
-            var comando = new AtualizarHinoCommand(input);
-            var response = await _mediator.Send(comando);
-            return Ok(response);
+            try
+            {
+                var comando = new AtualizarHinoCommand(input);
+                var response = await _mediator.Send(comando);
+                return Ok(response);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+          
         }
 
         [HttpDelete("{id_hino}")]
         [Authorize(Roles = "ENCARREGADO,REGIONAL,INSTRUTOR")]
         public async Task<IActionResult> ExcluirHino(long id_hino)
         {
-            var comando = new ExcluirHinoCommand(id_hino);
-            var response = await _mediator.Send(comando);
-            return Ok(response);
+            try
+            {
+                var comando = new ExcluirHinoCommand(id_hino);
+                var response = await _mediator.Send(comando);
+                return Ok(response);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+           
         }
 
     }

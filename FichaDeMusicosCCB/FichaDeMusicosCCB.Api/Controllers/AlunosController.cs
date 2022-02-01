@@ -24,27 +24,63 @@ namespace FichaDeMusicosCCB.Api.Controllers
         [Authorize(Roles = "ENCARREGADO,REGIONAL,INSTRUTOR")]
         public async Task<IActionResult> CadastrarAluno([FromBody] AlunoInputModel input)
         {
-            var comando = new CadastrarAlunoCommand(input);
-            var response = await _mediator.Send(comando);
-            return Ok(response);
+            try
+            {
+                var comando = new CadastrarAlunoCommand(input);
+                var response = await _mediator.Send(comando);
+                return Ok(response);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+
         }
 
         [HttpPut]
         [Authorize(Roles = "ENCARREGADO,REGIONAL,INSTRUTOR")]
         public async Task<IActionResult> AtualizarAluno([FromBody] AlunoInputModel input)
         {
-            var comando = new AtualizarAlunoCommand(input);
-            var response = await _mediator.Send(comando);
-            return Ok(response);
+            try
+            {
+                var comando = new AtualizarAlunoCommand(input);
+                var response = await _mediator.Send(comando);
+                return Ok(response);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+
         }
 
         [HttpDelete("{id_aluno}")]
         [Authorize(Roles = "ENCARREGADO,REGIONAL,INSTRUTOR")]
         public async Task<IActionResult> ExcluirAluno(long id_aluno)
         {
-            var comando = new ExcluirAlunoCommand(id_aluno);
-            var response = await _mediator.Send(comando);
-            return Ok(response);
+            try
+            {
+                var comando = new ExcluirAlunoCommand(id_aluno);
+                var response = await _mediator.Send(comando);
+                return Ok(response);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+
         }
 
     }

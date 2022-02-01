@@ -25,27 +25,63 @@ namespace FichaDeMusicosCCB.Api.Controllers
         [Authorize(Roles = "ENCARREGADO,REGIONAL,INSTRUTOR")]
         public async Task<IActionResult> CadastrarOcorrencia([FromBody] OcorrenciaInputModel input)
         {
-            var comando = new CadastrarOcorrenciaCommand(input);
-            var response = await _mediator.Send(comando);
-            return Ok(response);
+            try
+            {
+                var comando = new CadastrarOcorrenciaCommand(input);
+                var response = await _mediator.Send(comando);
+                return Ok(response);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+            
         }
 
         [HttpPut]
         [Authorize(Roles = "ENCARREGADO,REGIONAL,INSTRUTOR")]
         public async Task<IActionResult> AtualizarOcorrencia([FromBody] OcorrenciaInputModel input)
         {
-            var comando = new AtualizarOcorrenciaCommand(input);
-            var response = await _mediator.Send(comando);
-            return Ok(response);
+            try
+            {
+                var comando = new AtualizarOcorrenciaCommand(input);
+                var response = await _mediator.Send(comando);
+                return Ok(response);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+            
         }
 
         [HttpDelete("{id_ocorrencia}")]
         [Authorize(Roles = "ENCARREGADO,REGIONAL,INSTRUTOR")]
         public async Task<IActionResult> ExcluirOcorrencia(long id_ocorrencia)
         {
-            var comando = new ExcluirOcorrenciaCommand(id_ocorrencia);
-            var response = await _mediator.Send(comando);
-            return Ok(response);
+            try
+            {
+                var comando = new ExcluirOcorrenciaCommand(id_ocorrencia);
+                var response = await _mediator.Send(comando);
+                return Ok(response);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+            
         }
 
     }
