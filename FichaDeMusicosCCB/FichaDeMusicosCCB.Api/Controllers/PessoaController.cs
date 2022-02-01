@@ -23,6 +23,15 @@ namespace FichaDeMusicosCCB.Api.Controllers
             _logger = logger;
         }
 
+        [HttpPost]
+        [Authorize(Roles = "ENCARREGADO,REGIONAL,INSTRUTOR")]
+        public async Task<IActionResult> CadastrarPessoa([FromBody] PessoaInputModel input)
+        {
+            var comando = new CadastrarPessoaCommand(input);
+            var response = await _mediator.Send(comando);
+            return Ok(response);
+        }
+
         [HttpPost("login")]
         [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] CredencialInputModel input)
