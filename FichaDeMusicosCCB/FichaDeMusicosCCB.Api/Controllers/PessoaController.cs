@@ -25,7 +25,7 @@ namespace FichaDeMusicosCCB.Api.Controllers
 
         [HttpGet("buscar-encarregado-local")]
         [Authorize(Roles = "ENCARREGADO,REGIONAL,INSTRUTOR")]
-        public async Task<IActionResult> BuscarEncarregadoLocal([FromQuery] string text)
+        public async Task<IActionResult> BuscarEncarregadoLocal([FromQuery] string? text)
         {
             try
             {
@@ -45,7 +45,7 @@ namespace FichaDeMusicosCCB.Api.Controllers
 
         [HttpGet("buscar-encarregado-regional")]
         [Authorize(Roles = "ENCARREGADO,REGIONAL,INSTRUTOR")]
-        public async Task<IActionResult> BuscarEncarregadoRegional([FromQuery] string text)
+        public async Task<IActionResult> BuscarEncarregadoRegional([FromQuery] string? text)
         {
             try
             {
