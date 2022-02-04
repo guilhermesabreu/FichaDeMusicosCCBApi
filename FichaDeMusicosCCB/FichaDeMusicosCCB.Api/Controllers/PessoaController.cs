@@ -64,7 +64,6 @@ namespace FichaDeMusicosCCB.Api.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "ENCARREGADO,REGIONAL,INSTRUTOR")]
         public async Task<IActionResult> CadastrarPessoa([FromBody] PessoaInputModel input)
         {
             try
