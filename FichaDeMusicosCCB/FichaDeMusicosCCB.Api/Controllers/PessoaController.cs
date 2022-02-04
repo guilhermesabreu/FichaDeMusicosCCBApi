@@ -23,6 +23,46 @@ namespace FichaDeMusicosCCB.Api.Controllers
             _logger = logger;
         }
 
+        [HttpGet("buscar-encarregado-local")]
+        [Authorize(Roles = "ENCARREGADO,REGIONAL,INSTRUTOR")]
+        public async Task<IActionResult> BuscarEncarregadoLocal([FromQuery] string text)
+        {
+            try
+            {
+                var query = new BuscarEncarregadoLocalQuery(text);
+                var response = await _mediator.Send(query);
+                return Ok(response);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet("buscar-encarregado-regional")]
+        [Authorize(Roles = "ENCARREGADO,REGIONAL,INSTRUTOR")]
+        public async Task<IActionResult> BuscarEncarregadoRegional([FromQuery] string text)
+        {
+            try
+            {
+                var query = new BuscarEncarregadoRegionalQuery(text);
+                var response = await _mediator.Send(query);
+                return Ok(response);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
         [HttpPost]
         [Authorize(Roles = "ENCARREGADO,REGIONAL,INSTRUTOR")]
         public async Task<IActionResult> CadastrarPessoa([FromBody] PessoaInputModel input)
