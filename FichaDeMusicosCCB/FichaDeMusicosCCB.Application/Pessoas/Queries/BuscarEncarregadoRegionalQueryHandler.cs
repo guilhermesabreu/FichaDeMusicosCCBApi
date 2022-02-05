@@ -18,7 +18,7 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Query
         public async Task<List<string>> Handle(BuscarEncarregadoRegionalQuery request, CancellationToken cancellationToken)
         {
             var pessoas = _context.Pessoas.AsQueryable().Include(x => x.User);
-            var encarregados = pessoas.Where(x => x.NomePessoa.StartsWith(request.Text) && x.User.Role.Equals("REGIONAL")).Select(x => x.User.UserName +"-"+x.NomePessoa);
+            var encarregados = pessoas.Where(x => x.NomePessoa.StartsWith(request.Text) && x.User.Role.Equals("REGIONAL")).Select(x => x.NomePessoa);
             return encarregados.ToList();
         }
 
