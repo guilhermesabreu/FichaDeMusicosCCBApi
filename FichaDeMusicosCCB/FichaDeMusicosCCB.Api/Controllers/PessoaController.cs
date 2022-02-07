@@ -23,8 +23,8 @@ namespace FichaDeMusicosCCB.Api.Controllers
             _logger = logger;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Inicializador()
+        [HttpGet("despertador")]
+        public async Task<IActionResult> Despertador()
         {
             return Ok();
         }
