@@ -23,6 +23,12 @@ namespace FichaDeMusicosCCB.Api.Controllers
             _logger = logger;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Inicializador()
+        {
+            return Ok();
+        }
+
         [HttpGet("buscar-encarregado-local")]
         public async Task<IActionResult> BuscarEncarregadoLocal([FromQuery] string? text)
         {
