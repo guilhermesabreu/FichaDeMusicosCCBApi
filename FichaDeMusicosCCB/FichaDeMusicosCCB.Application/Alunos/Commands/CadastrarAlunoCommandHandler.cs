@@ -28,9 +28,9 @@ namespace FichaDeMusicosCCB.Application.Alunos.Commands
                     .Map(dest => dest.User.UserName, src => Utils.NomeParaCredencial(src.Nome))
                     .Map(dest => dest.User.Password, src => Utils.NomeParaCredencial(src.Nome))
                     .Map(dest => dest.NomePessoa, src => src.Nome)
-                    .Map(dest => dest.ApelidoInstrutorPessoa, src => src.ApelidoInstrutor)
-                    .Map(dest => dest.ApelidoEncarregadoPessoa, src => src.ApelidoEncarregado)
-                    .Map(dest => dest.ApelidoEncRegionalPessoa, src => src.ApelidoEncRegional)
+                    .Map(dest => dest.ApelidoInstrutorPessoa, src => src.Instrutor)
+                    .Map(dest => dest.ApelidoEncarregadoPessoa, src => ObterApelidoPeloNomeCompleto(src.EncarregadoLocal))
+                    .Map(dest => dest.ApelidoEncRegionalPessoa, src => ObterApelidoPeloNomeCompleto(src.EncarregadoRegional))
                     .Map(dest => dest.RegiaoPessoa, src => src.Regiao)
                     .Map(dest => dest.RegionalPessoa, src => src.Regional)
                     .Map(dest => dest.CelularPessoa, src => src.Celular)
@@ -73,6 +73,15 @@ namespace FichaDeMusicosCCB.Application.Alunos.Commands
                 throw new Exception(Utils.MensagemErro500Padrao);
             }
 
+        }
+
+        public async Task<string> ObterApelidoPeloNomeCompleto(string nomeCompleto)
+        {
+            var pessoa = _context.Pessoas.AsNoTracking().Include(x => x.User).Where(x => x.NomePessoa.Equals(nomeCompleto)).FirstOrDefaultAsync();
+            if (pessoa.Result == null)
+                throw new ArgumentException("Encarregado inexistente");
+
+            return pessoa.Result.User.UserName;
         }
 
         public async Task<Pessoa> AlunoCriado(Pessoa pessoa)

@@ -6,9 +6,9 @@
         public string? UserName { get; set; }
         public string? Password { get; set; }
         public string? Nome { get; set; }
-        public string? ApelidoInstrutor { get; set; }
-        public string? ApelidoEncarregado { get; set; }
-        public string? ApelidoEncRegional { get; set; }
+        public string? Instrutor { get; set; }
+        public string? EncarregadoLocal { get; set; }
+        public string? EncarregadoRegional { get; set; }
         public string? Regiao { get; set; }
         public string? Regional { get; set; }
         public string? Celular { get; set; }
