@@ -79,11 +79,11 @@ namespace FichaDeMusicosCCB.Application.Alunos.Commands
 
         public async Task<string> ObterApelidoPeloNomeCompleto(string nomeCompleto)
         {
-            var pessoa = _context.Pessoas.AsNoTracking().Include(x => x.User).Where(x => x.NomePessoa.Equals(nomeCompleto)).FirstOrDefaultAsync();
-            if (pessoa.Result == null)
-                throw new ArgumentException("Encarregado inexistente");
+            var pessoa = await _context.Pessoas.AsNoTracking().Include(x => x.User).Where(x => x.NomePessoa.Equals(nomeCompleto)).FirstOrDefaultAsync();
+            if (pessoa == null)
+                return string.Empty;
 
-            return pessoa.Result.User.UserName;
+            return pessoa.User.UserName;
         }
 
         public async Task<Pessoa> AlunoAtualizado(Pessoa pessoaAntiga, Pessoa pessoaAtual)
