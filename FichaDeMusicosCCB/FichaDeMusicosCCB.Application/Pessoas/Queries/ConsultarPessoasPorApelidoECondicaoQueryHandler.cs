@@ -4,6 +4,7 @@ using FichaDeMusicosCCB.Domain.ViewModels;
 using FichaDeMusicosCCB.Persistence;
 using Mapster;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace FichaDeMusicosCCB.Application.Pessoas.Query
 {
@@ -51,9 +52,27 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Query
             var pessoasPorInstrutor = pessoas.Where(x => (x.ApelidoInstrutorPessoa.Equals(request.ApelidoInstrutor)
                                                       || x.ApelidoEncarregadoPessoa.Equals(request.ApelidoEncarregado)
                                                       || x.ApelidoEncRegionalPessoa.Equals(request.ApelidoEncarregadoRegional))
-                                                      && x.CondicaoPessoa.Equals(request.Condicao));
+                                                      && x.CondicaoPessoa.Equals(request.Condicao)).ToList()
+                .Select(x =>
+                {
+                    x.ApelidoEncarregadoPessoa = ObterNomePeloApelido(x.ApelidoEncarregadoPessoa).Result;
+                    x.ApelidoInstrutorPessoa = ObterNomePeloApelido(x.ApelidoInstrutorPessoa).Result;
+                    x.ApelidoEncRegionalPessoa = ObterNomePeloApelido(x.ApelidoEncRegionalPessoa).Result;
+                    return x;
+                }).ToList();
             return pessoasPorInstrutor.Adapt<List<PessoaViewModel>>();
         }
+
+        public async Task<string> ObterNomePeloApelido(string apelido)
+        {
+            var pessoa = await _context.Pessoas.AsNoTracking().Include(x => x.User).Where(x => !string.IsNullOrEmpty(x.User.UserName) && x.User.UserName.Equals(apelido)).FirstOrDefaultAsync();
+            if (pessoa == null)
+                return string.Empty;
+
+            return pessoa.NomePessoa;
+        }
+
+
 
     }
 }
