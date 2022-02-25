@@ -48,7 +48,7 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Query
             if (string.IsNullOrEmpty(request.ApelidoEncarregado) && string.IsNullOrEmpty(request.ApelidoEncarregadoRegional) && string.IsNullOrEmpty(request.ApelidoInstrutor))
                 throw new ArgumentException("Informe a condição que queira filtrar.");
 
-            var pessoas = _context.Pessoas.AsQueryable();
+            var pessoas = _context.Pessoas.AsQueryable().Include(x => x.Hinos).Include(x => x.Ocorrencias);
             var pessoasPorInstrutor = pessoas.Where(x => (x.ApelidoInstrutorPessoa.Equals(request.ApelidoInstrutor)
                                                       || x.ApelidoEncarregadoPessoa.Equals(request.ApelidoEncarregado)
                                                       || x.ApelidoEncRegionalPessoa.Equals(request.ApelidoEncarregadoRegional))
