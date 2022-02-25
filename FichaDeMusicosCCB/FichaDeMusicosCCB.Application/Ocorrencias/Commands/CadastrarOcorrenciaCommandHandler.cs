@@ -25,7 +25,7 @@ namespace FichaDeMusicosCCB.Application.Ocorrencias.Commands
             {
                 #region MapearParametro
                 TypeAdapterConfig<CadastrarOcorrenciaCommand, Ocorrencia>.NewConfig()
-                    .Map(dest => dest.DataOcorrencia, src => DateTime.Now.ToString("dd/MM/yyyy HH:mm"))
+                    .Map(dest => dest.DataOcorrencia, src => DateTime.Now)
                     .Map(dest => dest.NumeroLicaoOcorrencia, src => src.NumeroLicao)
                     .Map(dest => dest.MetodoOcorrencia, src => src.NomeMetodo)
                     .Map(dest => dest.ObservacaoOcorrencia, src => src.ObservacaoInstrutor);
@@ -76,7 +76,6 @@ namespace FichaDeMusicosCCB.Application.Ocorrencias.Commands
 
             if (ocorrenciaEntity.Count > 0)
                 throw new ArgumentException("Esta ocorrência já foi cadastrada.");
-
 
             ocorrencia.Pessoa = pessoaAluna;
             return ocorrencia; 
