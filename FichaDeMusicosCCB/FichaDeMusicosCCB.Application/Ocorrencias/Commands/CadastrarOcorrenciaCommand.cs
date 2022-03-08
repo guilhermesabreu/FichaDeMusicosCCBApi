@@ -10,6 +10,7 @@ namespace FichaDeMusicosCCB.Application.Ocorrencias.Commands
         public int NumeroLicao { get; set; }
         public string? NomeMetodo { get; set; }
         public string? ObservacaoInstrutor { get; set; }
+        public string? DataOcorrencia { get; set; }
         public int IdPessoa { get; set; }
         public CadastrarOcorrenciaCommand(OcorrenciaInputModel input)
         {
