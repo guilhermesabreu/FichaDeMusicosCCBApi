@@ -32,7 +32,6 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
                     .Map(dest => dest.User.UserName, src => src.UserName)
                     .Map(dest => dest.User.Password, src => src.Password)
                     .Map(dest => dest.NomePessoa, src => src.Nome)
-                    .Map(dest => dest.ApelidoInstrutorPessoa, src => src.Instrutor)
                     .Map(dest => dest.ApelidoEncarregadoPessoa, src => ObterApelidoPeloNomeCompleto(src.EncarregadoLocal).Result)
                     .Map(dest => dest.ApelidoEncRegionalPessoa, src => ObterApelidoPeloNomeCompleto(src.EncarregadoRegional).Result)
                     .Map(dest => dest.RegiaoPessoa, src => src.Regiao)
@@ -90,8 +89,9 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
 
         public async Task<Pessoa> PessoaAtualizada(Pessoa pessoaAntiga, Pessoa pessoaAtual)
         {
-            var userNameAtual = pessoaAtual.User.UserName;
-            var senhaAtual = pessoaAtual.User.Password;
+            var userNameAtual = pessoaAtual.User.UserName == null ? pessoaAntiga.User.UserName : pessoaAtual.User.UserName;
+            var senhaAtual = pessoaAtual.User.Password == null ? pessoaAntiga.User.Password : pessoaAtual.User.Password;
+
             var senhaAntiga = pessoaAntiga.User.Password;
 
             var pessoaAtualizada = pessoaAtual;
@@ -99,10 +99,10 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
             pessoaAtualizada.User.NormalizedUserName = userNameAtual;
             pessoaAtualizada.User.UserName = userNameAtual;
             pessoaAtualizada.User.Password = senhaAtual;
+            pessoaAtualizada.ApelidoInstrutorPessoa = pessoaAntiga.ApelidoInstrutorPessoa;
             
             _context.Pessoas.Update(pessoaAtualizada);
-            if (_context.SaveChanges().Equals(0))
-                throw new ArgumentException("Não foi possível atualizar esta pessoa, verifique os dados inseridos");
+            _context.SaveChanges();
 
             //Realizar atualização do UserName e Password corretamente
             var result = await _userManager.UpdateAsync(pessoaAtual.User);

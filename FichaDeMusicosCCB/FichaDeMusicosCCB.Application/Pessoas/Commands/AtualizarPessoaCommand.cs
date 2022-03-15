@@ -11,7 +11,6 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
         public string? UserName { get; set; }
         public string? Password { get; set; }
         public string? Nome { get; set; }
-        public string? Instrutor { get; set; }
         public string? EncarregadoLocal { get; set; }
         public string? EncarregadoRegional { get; set; }
         public string? Regiao { get; set; }
