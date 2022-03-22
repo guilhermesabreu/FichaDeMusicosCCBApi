@@ -86,6 +86,25 @@ namespace FichaDeMusicosCCB.Api.Controllers
             }
         }
 
+        [HttpGet("buscar-pessoa-logada")]
+        public async Task<IActionResult> BuscarPessoaLogada([FromQuery] string? apelido)
+        {
+            try
+            {
+                var query = new BuscarPessoaLogadaQuery(apelido);
+                var response = await _mediator.Send(query);
+                return Ok(response);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> CadastrarPessoa([FromBody] PessoaInputModel input)
         {
