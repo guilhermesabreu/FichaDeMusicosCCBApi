@@ -25,8 +25,8 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
             {
                 #region MapearParametro
                 TypeAdapterConfig<CadastrarPessoaCommand, Pessoa>.NewConfig()
-                    .Map(dest => dest.User.UserName, src => src.UserName)
-                    .Map(dest => dest.User.Password, src => src.Password)
+                    .Map(dest => dest.User.UserName, src => string.IsNullOrEmpty(src.UserName) ? Utils.NomeParaCredencial(src.Nome) : src.UserName)
+                    .Map(dest => dest.User.Password, src => string.IsNullOrEmpty(src.Password) ? Utils.NomeParaCredencial(src.Nome) : src.Password)
                     .Map(dest => dest.NomePessoa, src => src.Nome)
                     .Map(dest => dest.ApelidoInstrutorPessoa, src => src.Instrutor)
                     .Map(dest => dest.ApelidoEncarregadoPessoa, src => ObterApelidoPeloNomeCompleto(src.EncarregadoLocal).Result)
