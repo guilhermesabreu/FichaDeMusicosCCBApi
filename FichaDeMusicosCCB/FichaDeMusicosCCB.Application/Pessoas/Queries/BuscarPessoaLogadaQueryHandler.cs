@@ -42,6 +42,9 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Query
                 if (pessoaFiltrada is null)
                     throw new ArgumentException("Pessoa não encontrada");
 
+                pessoaFiltrada.ApelidoEncarregadoPessoa = ObterNomePeloApelido(pessoaFiltrada.ApelidoEncarregadoPessoa).Result;
+                pessoaFiltrada.ApelidoEncRegionalPessoa = ObterNomePeloApelido(pessoaFiltrada.ApelidoEncRegionalPessoa).Result;
+
                 return pessoaFiltrada.Adapt<PessoaViewModel>();
             }
             catch (ArgumentException ex)
@@ -53,6 +56,15 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Query
                 throw new Exception(Utils.MensagemErro500Padrao);
             }
 
+        }
+
+        public async Task<string> ObterNomePeloApelido(string apelido)
+        {
+            var pessoa = await _context.Pessoas.AsNoTracking().Include(x => x.User).Where(x => !string.IsNullOrEmpty(x.User.UserName) && x.User.UserName.Equals(apelido)).FirstOrDefaultAsync();
+            if (pessoa == null)
+                return string.Empty;
+
+            return pessoa.NomePessoa;
         }
 
     }

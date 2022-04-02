@@ -38,8 +38,8 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
                     .Map(dest => dest.RegionalPessoa, src => src.Regional)
                     .Map(dest => dest.CelularPessoa, src => src.Celular)
                     .Map(dest => dest.EmailPessoa, src => src.Email)
-                    .Map(dest => dest.DataNascimentoPessoa, src => DateTime.ParseExact(src.DataNascimento, "dd/MM/yyyy", null))
-                    .Map(dest => dest.DataInicioPessoa, src => DateTime.ParseExact(src.DataInicio, "dd/MM/yyyy", null))
+                    .Map(dest => dest.DataNascimentoPessoa, src => DateTimeOffset.Parse(src.DataNascimento).UtcDateTime.ToString("dd/MM/yyyy"))
+                    .Map(dest => dest.DataInicioPessoa, src => DateTimeOffset.Parse(src.DataInicio).UtcDateTime.ToString("dd/MM/yyyy"))
                     .Map(dest => dest.ComumPessoa, src => src.Comum)
                     .Map(dest => dest.InstrumentoPessoa, src => src.Instrumento)
                     .Map(dest => dest.CondicaoPessoa, src => src.Condicao);
