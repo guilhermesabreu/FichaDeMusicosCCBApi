@@ -1,4 +1,3 @@
-using FichaDeMusicosCCB.Application.Alunos.Commands;
 using FichaDeMusicosCCB.Application.Ocorrencias.Commands;
 using FichaDeMusicosCCB.Domain.InputModels;
 using MediatR;

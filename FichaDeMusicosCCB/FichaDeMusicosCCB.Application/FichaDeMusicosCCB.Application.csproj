@@ -20,7 +20,6 @@
   <ItemGroup>
     <Folder Include="Hinos\Queries\" />
     <Folder Include="Ocorrencias\Queries\" />
-    <Folder Include="Alunos\Queries\" />
   </ItemGroup>
 
 </Project>
