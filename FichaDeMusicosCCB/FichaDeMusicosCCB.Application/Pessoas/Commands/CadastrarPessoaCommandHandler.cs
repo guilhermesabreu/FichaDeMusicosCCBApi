@@ -105,9 +105,17 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
         public async Task VerificaExistenciaPessoa(Pessoa pessoa)
         {
 
-            var usuario = await _context.Pessoas.Where(x => x.NomePessoa == pessoa.NomePessoa
+            var usuario = await _context.Pessoas.AsNoTracking().Where(x => x.NomePessoa == pessoa.NomePessoa
                                                     || x.EmailPessoa == pessoa.EmailPessoa
                                                     || x.CelularPessoa == pessoa.CelularPessoa).ToListAsync();
+
+            var encarregadoLocalExistente = _context.Pessoas.AsNoTracking()
+                .Where(x => x.ComumPessoa.Equals(pessoa.ComumPessoa) 
+                && pessoa.CondicaoPessoa.ToUpper().Equals("ENCARREGADO")).FirstOrDefault();
+
+            if (encarregadoLocalExistente != null)
+                throw new ArgumentException("Já existe um encarregado Local nesta comum congregação");
+            
             if (usuario.Count > 0)
                 throw new ArgumentException("Os dados desta pessoa já está cadastrado em outra pessoa");
 

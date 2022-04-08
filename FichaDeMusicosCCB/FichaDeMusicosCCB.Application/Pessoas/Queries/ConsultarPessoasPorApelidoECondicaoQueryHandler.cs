@@ -49,7 +49,7 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Query
                 throw new ArgumentException("Informe a condição que queira filtrar.");
 
             var pessoas = _context.Pessoas.AsQueryable().Include(x => x.Hinos).Include(x => x.Ocorrencias);
-            var pessoasPorInstrutor = pessoas.Where(x => (x.ApelidoInstrutorPessoa.Equals(request.ApelidoInstrutor)
+            var pessoasPorInstrutor = pessoas.Where(x => (x.ApelidoInstrutorPessoa.Contains(request.ApelidoInstrutor)
                                                       || x.ApelidoEncarregadoPessoa.Equals(request.ApelidoEncarregado)
                                                       || x.ApelidoEncRegionalPessoa.Equals(request.ApelidoEncarregadoRegional))
                                                       && x.CondicaoPessoa.Equals(request.Condicao)).ToList()
