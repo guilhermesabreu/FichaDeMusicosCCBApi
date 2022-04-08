@@ -32,6 +32,7 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
                     .Map(dest => dest.User.UserName, src => src.UserName)
                     .Map(dest => dest.User.Password, src => src.Password)
                     .Map(dest => dest.NomePessoa, src => src.Nome)
+                    .Map(dest => dest.ApelidoInstrutorPessoa, src => ObterApelidoPeloNomeCompleto(src.Instrutor).Result)
                     .Map(dest => dest.ApelidoEncarregadoPessoa, src => ObterApelidoPeloNomeCompleto(src.EncarregadoLocal).Result)
                     .Map(dest => dest.ApelidoEncRegionalPessoa, src => ObterApelidoPeloNomeCompleto(src.EncarregadoRegional).Result)
                     .Map(dest => dest.RegiaoPessoa, src => src.Regiao)
@@ -99,8 +100,10 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
             pessoaAtualizada.User.NormalizedUserName = userNameAtual;
             pessoaAtualizada.User.UserName = userNameAtual;
             pessoaAtualizada.User.Password = senhaAtual;
-            pessoaAtualizada.ApelidoInstrutorPessoa = pessoaAntiga.ApelidoInstrutorPessoa;
-            
+            pessoaAtualizada.ApelidoInstrutorPessoa = !pessoaAntiga.ApelidoInstrutorPessoa.Contains(pessoaAtual.ApelidoInstrutorPessoa) 
+                                                    ? pessoaAntiga.ApelidoInstrutorPessoa +";"+ pessoaAtual.ApelidoInstrutorPessoa
+                                                    : pessoaAntiga.ApelidoInstrutorPessoa;
+
             _context.Pessoas.Update(pessoaAtualizada);
             _context.SaveChanges();
 

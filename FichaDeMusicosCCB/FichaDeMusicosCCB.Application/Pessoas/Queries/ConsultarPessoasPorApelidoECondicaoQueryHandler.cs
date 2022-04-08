@@ -35,7 +35,7 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Query
                     .Map(dest => dest.Condicao, src => src.CondicaoPessoa);
 
             TypeAdapterConfig<Ocorrencia, OcorrenciaViewModel>.NewConfig()
-                    .Map(dest => dest.DataOcorrencia, src => Utils.DataString(src.DataOcorrencia))        
+                    .Map(dest => dest.DataOcorrencia, src => Utils.DataString(src.DataOcorrencia))
                     .Map(dest => dest.NumeroLicao, src => src.NumeroLicaoOcorrencia)
                     .Map(dest => dest.NomeMetodo, src => src.MetodoOcorrencia)
                     .Map(dest => dest.ObservacaoInstrutor, src => src.ObservacaoOcorrencia);
@@ -65,11 +65,36 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Query
 
         public async Task<string> ObterNomePeloApelido(string apelido)
         {
-            var pessoa = await _context.Pessoas.AsNoTracking().Include(x => x.User).Where(x => !string.IsNullOrEmpty(x.User.UserName) && x.User.UserName.Equals(apelido)).FirstOrDefaultAsync();
-            if (pessoa == null)
-                return string.Empty;
 
-            return pessoa.NomePessoa;
+            if (!string.IsNullOrEmpty(apelido) && apelido.Contains(";"))
+            {
+                var instrutores = apelido.Split(';');
+                string nomesCompletos = "";
+                foreach (var instrutor in instrutores)
+                {
+                    var pessoa = await _context.Pessoas.AsNoTracking()
+                        .Include(x => x.User)
+                        .Where(x => !string.IsNullOrEmpty(x.User.UserName) 
+                        && x.User.UserName.Equals(instrutor)).FirstOrDefaultAsync();
+                    if (pessoa != null)
+                    {
+                        nomesCompletos = !nomesCompletos.Equals("") 
+                                        ? nomesCompletos + ";"+ pessoa.NomePessoa 
+                                        : pessoa.NomePessoa;
+                    }
+                }
+                return nomesCompletos;
+            }
+            else
+            {
+
+                var pessoa = await _context.Pessoas.AsNoTracking().Include(x => x.User).Where(x => !string.IsNullOrEmpty(x.User.UserName) && x.User.UserName.Equals(apelido)).FirstOrDefaultAsync();
+                if (pessoa == null)
+                    return string.Empty;
+
+                return pessoa.NomePessoa;
+            }
+
         }
 
 
