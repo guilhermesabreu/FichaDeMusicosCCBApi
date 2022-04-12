@@ -94,6 +94,8 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
             var senhaAtual = pessoaAtual.User.Password == null ? pessoaAntiga.User.Password : pessoaAtual.User.Password;
 
             var senhaAntiga = pessoaAntiga.User.Password;
+            pessoaAntiga.ApelidoInstrutorPessoa = string.IsNullOrEmpty(pessoaAntiga.ApelidoInstrutorPessoa) 
+                                                ? "" : pessoaAntiga.ApelidoInstrutorPessoa;
 
             var pessoaAtualizada = pessoaAtual;
             pessoaAtualizada.User = pessoaAntiga.User;

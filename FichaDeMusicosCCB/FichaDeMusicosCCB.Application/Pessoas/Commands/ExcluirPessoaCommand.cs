@@ -7,10 +7,10 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
 {
     public class ExcluirPessoaCommand : IRequest<bool>
     {
-        public string UserName { get; set; }
-        public ExcluirPessoaCommand(string userName)
+        public long IdPessoa { get; set; }
+        public ExcluirPessoaCommand(long idPessoa)
         {
-            UserName = userName;
+            IdPessoa = idPessoa;
         }
     }
 }

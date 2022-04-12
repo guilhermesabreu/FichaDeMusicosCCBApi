@@ -206,13 +206,13 @@ namespace FichaDeMusicosCCB.Api.Controllers
 
         }
 
-        [HttpDelete("{user_name}")]
+        [HttpDelete("{id_pessoa}")]
         [Authorize(Roles = "ENCARREGADO,REGIONAL,INSTRUTOR")]
-        public async Task<IActionResult> ExcluirPessoa(string user_name)
+        public async Task<IActionResult> ExcluirPessoa(long id_pessoa)
         {
             try
             {
-                var comando = new ExcluirPessoaCommand(user_name);
+                var comando = new ExcluirPessoaCommand(id_pessoa);
                 var result = await _mediator.Send(comando);
                 if (result)
                 {

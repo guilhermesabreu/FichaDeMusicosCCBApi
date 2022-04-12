@@ -25,7 +25,7 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
         {
             try
             {
-                var pessoaEncontrada = await UsuarioEncontrado(request.UserName);
+                var pessoaEncontrada = await UsuarioEncontrado(request.IdPessoa);
                 var exclusao = await ExcluirPessoa(pessoaEncontrada);
                 return exclusao;
             }
@@ -49,9 +49,9 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
             return false;
         }
 
-        public async Task<User> UsuarioEncontrado(string userName)
+        public async Task<User> UsuarioEncontrado(long idPessoa)
         {
-            var query = await _context.Users.AsNoTracking().Where(x => x.UserName == userName).FirstOrDefaultAsync();
+            var query = await _context.Users.AsNoTracking().Where(x => x.Id == idPessoa).FirstOrDefaultAsync();
             if (query == null)
                 throw new ArgumentException("Usuário não encontrado");
 

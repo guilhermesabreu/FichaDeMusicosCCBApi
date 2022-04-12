@@ -23,7 +23,7 @@ namespace FichaDeMusicosCCB.Application.Ocorrencias.Commands
             {
                 #region MapearParametro
                 TypeAdapterConfig<AtualizarOcorrenciaCommand, Ocorrencia>.NewConfig()
-                    .Map(dest => dest.DataOcorrencia, src => DateTime.ParseExact(src.DataOcorrencia, "dd/MM/yyyy", null))
+                    .Map(dest => dest.DataOcorrencia, src => DateTimeOffset.Parse(src.DataOcorrencia).UtcDateTime)
                     .Map(dest => dest.NumeroLicaoOcorrencia, src => src.NumeroLicao)
                     .Map(dest => dest.MetodoOcorrencia, src => src.NomeMetodo)
                     .Map(dest => dest.ObservacaoOcorrencia, src => src.ObservacaoInstrutor);
