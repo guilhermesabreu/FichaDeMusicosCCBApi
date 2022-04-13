@@ -8,9 +8,10 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
     public class ExcluirPessoaCommand : IRequest<bool>
     {
         public long IdPessoa { get; set; }
-        public ExcluirPessoaCommand(long idPessoa)
+        public string? ApelidoDonoDaFicha { get; set; }
+        public ExcluirPessoaCommand(ExclusaoPessoaInputModel input)
         {
-            IdPessoa = idPessoa;
+            input.Adapt(this);
         }
     }
 }

@@ -28,7 +28,7 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
                     .Map(dest => dest.User.UserName, src => string.IsNullOrEmpty(src.UserName) ? Utils.NomeParaCredencial(src.Nome) : src.UserName)
                     .Map(dest => dest.User.Password, src => string.IsNullOrEmpty(src.Password) ? Utils.NomeParaCredencial(src.Nome) : src.Password)
                     .Map(dest => dest.NomePessoa, src => src.Nome)
-                    .Map(dest => dest.ApelidoInstrutorPessoa, src => src.Instrutor)
+                    .Map(dest => dest.ApelidoInstrutorPessoa, src => !string.IsNullOrEmpty(src.Instrutor)? ";"+ src.Instrutor : "")
                     .Map(dest => dest.ApelidoEncarregadoPessoa, src => ObterApelidoPeloNomeCompleto(src.EncarregadoLocal).Result)
                     .Map(dest => dest.ApelidoEncRegionalPessoa, src => ObterApelidoPeloNomeCompleto(src.EncarregadoRegional).Result)
                     .Map(dest => dest.RegiaoPessoa, src => src.Regiao)

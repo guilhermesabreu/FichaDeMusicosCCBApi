@@ -227,13 +227,13 @@ namespace FichaDeMusicosCCB.Api.Controllers
 
         }
 
-        [HttpDelete("{id_pessoa}")]
+        [HttpPut("excluir-pessoa-na-ficha")]
         [Authorize(Roles = "ENCARREGADO,REGIONAL,INSTRUTOR")]
-        public async Task<IActionResult> ExcluirPessoa(long id_pessoa)
+        public async Task<IActionResult> ExcluirPessoaNaFicha([FromBody] ExclusaoPessoaInputModel input)
         {
             try
             {
-                var comando = new ExcluirPessoaCommand(id_pessoa);
+                var comando = new ExcluirPessoaCommand(input);
                 var result = await _mediator.Send(comando);
                 if (result)
                 {
