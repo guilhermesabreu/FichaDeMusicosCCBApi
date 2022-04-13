@@ -185,6 +185,27 @@ namespace FichaDeMusicosCCB.Api.Controllers
             }
         }
 
+        [HttpPut("incluir-aluno-na-ficha")]
+        [Authorize(Roles = "ENCARREGADO,REGIONAL,INSTRUTOR")]
+        public async Task<IActionResult> IncluirAlunoNaFicha([FromBody] AlunoNaFichaInputModel input)
+        {
+            try
+            {
+                var comando = new IncluirAlunoNaFichaCommand(input);
+                var result = await _mediator.Send(comando);
+                return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+
+        }
+
         [HttpPut]
         [Authorize(Roles = "ENCARREGADO,REGIONAL,INSTRUTOR")]
         public async Task<IActionResult> AtualizarPessoa([FromBody] PessoaInputModel input)
