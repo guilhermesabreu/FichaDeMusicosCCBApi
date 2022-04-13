@@ -26,7 +26,7 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
             try
             {
                 var pessoaEncontrada = await UsuarioEncontrado(request.IdPessoa);
-                var exclusao = await ExcluirPessoa(pessoaEncontrada, request.ApelidoDonoDaFicha);
+                var exclusao = await ExcluirPessoa(pessoaEncontrada);
                 return exclusao;
             }
             catch (ArgumentException ex)
@@ -40,47 +40,17 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
 
         }
 
-        public async Task<bool> ExcluirPessoa(User user, string donoDaFicha)
+        public async Task<bool> ExcluirPessoa(User user)
         {
-            var pessoaFicha = _context.Pessoas.AsNoTracking().Include(x => x.User).Where(x => x.User.UserName.Equals(donoDaFicha)).FirstOrDefault();
-            if (pessoaFicha == null)
-                throw new ArgumentException("Você não foi encontrado na base de dados");
-
-            user.Pessoa.ApelidoInstrutorPessoa = string.IsNullOrEmpty(user.Pessoa.ApelidoInstrutorPessoa) ? "" : user.Pessoa.ApelidoInstrutorPessoa;
-            user.Pessoa.ApelidoEncarregadoPessoa = string.IsNullOrEmpty(user.Pessoa.ApelidoEncarregadoPessoa) ? "" : user.Pessoa.ApelidoEncarregadoPessoa;
-            user.Pessoa.ApelidoEncRegionalPessoa = string.IsNullOrEmpty(user.Pessoa.ApelidoEncRegionalPessoa) ? "" : user.Pessoa.ApelidoEncRegionalPessoa;
-            if (pessoaFicha.CondicaoPessoa.ToUpper().Equals("INSTRUTOR"))
-            {
-                user.Pessoa.ApelidoInstrutorPessoa = user.Pessoa.ApelidoInstrutorPessoa.Contains(pessoaFicha.User.UserName)
-                                                ? user.Pessoa.ApelidoInstrutorPessoa.Replace(";" + pessoaFicha.User.UserName, "")
-                                                : user.Pessoa.ApelidoInstrutorPessoa;
-
-                if (string.IsNullOrEmpty(user.Pessoa.ApelidoInstrutorPessoa))
-                {
-                    _context.Remove(user);
-                    _context.SaveChanges();
-                    return true;
-                }
-                else
-                {
-                    _context.Pessoas.Update(user.Pessoa);
-                    _context.SaveChanges();
-                    return true;
-                }
-
-            }
-            else
-            {
-                _context.Remove(user);
-                _context.SaveChanges();
-                return true;
-            }
-            return false;
+            _context.Remove(user);
+            _context.SaveChanges();
+            return true;
         }
+
 
         public async Task<User> UsuarioEncontrado(long idPessoa)
         {
-            var query = await _context.Users.AsNoTracking().Include(x => x.Pessoa).Where(x => x.Id == idPessoa).FirstOrDefaultAsync();
+            var query = await _context.Users.AsNoTracking().Where(x => x.Id == idPessoa).FirstOrDefaultAsync();
             if (query == null)
                 throw new ArgumentException("Usuário não encontrado");
 

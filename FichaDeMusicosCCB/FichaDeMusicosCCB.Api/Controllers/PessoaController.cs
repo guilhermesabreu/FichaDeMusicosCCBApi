@@ -233,7 +233,31 @@ namespace FichaDeMusicosCCB.Api.Controllers
         {
             try
             {
-                var comando = new ExcluirPessoaCommand(input);
+                var comando = new ExcluirPessoaNaFichaCommand(input);
+                var result = await _mediator.Send(comando);
+                if (result)
+                {
+                    return Ok();
+                }
+                return StatusCode(500, "Internal Server Error");
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpDelete("{id_pessoa}")]
+        [Authorize(Roles = "ENCARREGADO,REGIONAL,INSTRUTOR")]
+        public async Task<IActionResult> ExcluirPessoa(long id_pessoa)
+        {
+            try
+            {
+                var comando = new ExcluirPessoaCommand(id_pessoa);
                 var result = await _mediator.Send(comando);
                 if (result)
                 {
