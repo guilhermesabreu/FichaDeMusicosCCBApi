@@ -79,6 +79,7 @@ namespace FichaDeMusicosCCB.Api
 
             IdentityBuilder builder = services.AddIdentityCore<User>(options =>
             {
+                options.User.AllowedUserNameCharacters = null;
                 options.Password.RequireDigit = false;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireLowercase = false;
