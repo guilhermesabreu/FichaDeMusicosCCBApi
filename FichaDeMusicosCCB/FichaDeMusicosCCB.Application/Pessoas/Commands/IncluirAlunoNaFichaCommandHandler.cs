@@ -69,6 +69,10 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
             switch (pessoaFicha.CondicaoPessoa.ToUpper())
             {
                 case "INSTRUTOR":
+
+                    if (alunoEncontrado.ApelidoInstrutorPessoa.Contains(pessoaFicha.User.UserName))
+                        throw new ArgumentException("Você já inseriu este aluno anteriormente");
+
                     alunoEncontrado.ApelidoInstrutorPessoa = !alunoEncontrado.ApelidoInstrutorPessoa.Contains(pessoaFicha.User.UserName)
                                                     ? alunoEncontrado.ApelidoInstrutorPessoa + ";" + pessoaFicha.User.UserName
                                                     : alunoEncontrado.ApelidoInstrutorPessoa;

@@ -55,18 +55,9 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
                                                 ? user.Pessoa.ApelidoInstrutorPessoa.Replace(";" + pessoaFicha.User.UserName, "")
                                                 : user.Pessoa.ApelidoInstrutorPessoa;
 
-                if (string.IsNullOrEmpty(user.Pessoa.ApelidoInstrutorPessoa))
-                {
-                    _context.Remove(user);
-                    _context.SaveChanges();
-                    return true;
-                }
-                else
-                {
-                    _context.Pessoas.Update(user.Pessoa);
-                    _context.SaveChanges();
-                    return true;
-                }
+                _context.Pessoas.Update(user.Pessoa);
+                _context.SaveChanges();
+                return true;
 
             }
             else
