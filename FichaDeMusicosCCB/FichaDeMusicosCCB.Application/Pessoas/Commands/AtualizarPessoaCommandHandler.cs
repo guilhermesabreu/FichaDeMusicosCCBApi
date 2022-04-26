@@ -90,6 +90,14 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
 
         public async Task<Pessoa> PessoaAtualizada(Pessoa pessoaAntiga, Pessoa pessoaAtual)
         {
+
+            var encarregadoLocalExistente = _context.Pessoas.AsNoTracking()
+                .Where(x => x.ComumPessoa.Equals(pessoaAtual.ComumPessoa)
+                && pessoaAtual.CondicaoPessoa.ToUpper().Equals("ENCARREGADO")).FirstOrDefault();
+
+            if (encarregadoLocalExistente != null)
+                throw new ArgumentException("Já existe um encarregado Local nesta comum congregação");
+
             var userNameAtual = pessoaAtual.User.UserName == null ? pessoaAntiga.User.UserName : pessoaAtual.User.UserName;
             var senhaAtual = pessoaAtual.User.Password == null ? pessoaAntiga.User.Password : pessoaAtual.User.Password;
 

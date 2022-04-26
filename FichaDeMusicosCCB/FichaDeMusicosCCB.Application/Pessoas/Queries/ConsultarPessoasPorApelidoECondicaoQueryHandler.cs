@@ -49,6 +49,8 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Query
                 throw new ArgumentException("Informe a condição que queira filtrar.");
 
             var pessoas = _context.Pessoas.AsQueryable().Include(x => x.Hinos).Include(x => x.Ocorrencias);
+
+
             var pessoasPorInstrutor = pessoas.Where(x => (x.ApelidoInstrutorPessoa.Contains(request.ApelidoInstrutor)
                                                       || x.ApelidoEncarregadoPessoa.Equals(request.ApelidoEncarregado)
                                                       || x.ApelidoEncRegionalPessoa.Equals(request.ApelidoEncarregadoRegional))
@@ -60,6 +62,10 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Query
                     x.ApelidoEncRegionalPessoa = ObterNomePeloApelido(x.ApelidoEncRegionalPessoa).Result;
                     return x;
                 }).ToList();
+
+            //if (!string.IsNullOrEmpty(request.Comum))
+            //    return pessoasPorInstrutor.Where(x => x.ComumPessoa.Equals(request.Comum)).ToList().Adapt<List<PessoaViewModel>>();
+
             return pessoasPorInstrutor.Adapt<List<PessoaViewModel>>();
         }
 

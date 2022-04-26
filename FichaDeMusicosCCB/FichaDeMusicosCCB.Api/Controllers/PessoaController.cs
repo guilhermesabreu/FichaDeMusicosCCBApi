@@ -29,6 +29,25 @@ namespace FichaDeMusicosCCB.Api.Controllers
             return Ok();
         }
 
+        [HttpGet("comuns")]
+        public async Task<IActionResult> BuscarComuns([FromQuery] string? text)
+        {
+            try
+            {
+                var query = new BuscarComunsQuery(text);
+                var response = await _mediator.Send(query);
+                return Ok(response);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
         [HttpGet("nome-aluno")]
         public async Task<IActionResult> BuscarAluno([FromQuery] string? text)
         {
