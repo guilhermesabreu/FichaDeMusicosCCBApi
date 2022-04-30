@@ -7,10 +7,11 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Query
 {
     public class BuscarEncarregadoRegionalQuery : IRequest<List<string>>
     {
-        public string? Text { get; set; }
-        public BuscarEncarregadoRegionalQuery(string text)
+        public string? Input { get; set; }
+        public string? ApelidoPessoaLogada { get; set; }
+        public BuscarEncarregadoRegionalQuery(BuscaPessoasQueryParameter parameters)
         {
-            Text = text;
+            parameters.Adapt(this);
         }
     }
 }

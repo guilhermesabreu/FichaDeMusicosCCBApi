@@ -29,12 +29,13 @@ namespace FichaDeMusicosCCB.Api.Controllers
             return Ok();
         }
 
-        [HttpGet("comuns")]
-        public async Task<IActionResult> BuscarComuns([FromQuery] string? text)
+
+        [HttpPost("recuperar-senha")]
+        public async Task<IActionResult> RecuperarSenha([FromBody] RecuperaSenhaQueryParameter parameters)
         {
             try
             {
-                var query = new BuscarComunsQuery(text);
+                var query = new RecuperarSenhaQuery(parameters);
                 var response = await _mediator.Send(query);
                 return Ok(response);
             }
@@ -49,11 +50,11 @@ namespace FichaDeMusicosCCB.Api.Controllers
         }
 
         [HttpGet("nome-aluno")]
-        public async Task<IActionResult> BuscarAluno([FromQuery] string? text)
+        public async Task<IActionResult> BuscarAluno([FromQuery] BuscaPessoasQueryParameter parameters)
         {
             try
             {
-                var query = new BuscarAlunoQuery(text);
+                var query = new BuscarAlunoQuery(parameters);
                 var response = await _mediator.Send(query);
                 return Ok(response);
             }
@@ -68,11 +69,11 @@ namespace FichaDeMusicosCCB.Api.Controllers
         }
 
         [HttpGet("nome-instrutor")]
-        public async Task<IActionResult> BuscarInstrutor([FromQuery] string? text)
+        public async Task<IActionResult> BuscarInstrutor([FromQuery] BuscaPessoasQueryParameter parameters)
         {
             try
             {
-                var query = new BuscarInstrutorQuery(text);
+                var query = new BuscarInstrutorQuery(parameters);
                 var response = await _mediator.Send(query);
                 return Ok(response);
             }
@@ -87,11 +88,11 @@ namespace FichaDeMusicosCCB.Api.Controllers
         }
 
         [HttpGet("nome-encarregado-local")]
-        public async Task<IActionResult> BuscarEncarregadoLocal([FromQuery] string? text)
+        public async Task<IActionResult> BuscarEncarregadoLocal([FromQuery] BuscaPessoasQueryParameter parameters)
         {
             try
             {
-                var query = new BuscarEncarregadoLocalQuery(text);
+                var query = new BuscarEncarregadoLocalQuery(parameters);
                 var response = await _mediator.Send(query);
                 return Ok(response);
             }
@@ -106,11 +107,11 @@ namespace FichaDeMusicosCCB.Api.Controllers
         }
 
         [HttpGet("nome-encarregado-regional")]
-        public async Task<IActionResult> BuscarEncarregadoRegional([FromQuery] string? text)
+        public async Task<IActionResult> BuscarEncarregadoRegional([FromQuery] BuscaPessoasQueryParameter parameters)
         {
             try
             {
-                var query = new BuscarEncarregadoRegionalQuery(text);
+                var query = new BuscarEncarregadoRegionalQuery(parameters);
                 var response = await _mediator.Send(query);
                 return Ok(response);
             }

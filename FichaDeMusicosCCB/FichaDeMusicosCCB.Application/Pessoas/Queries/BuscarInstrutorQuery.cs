@@ -7,10 +7,11 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Query
 {
     public class BuscarInstrutorQuery : IRequest<List<string>>
     {
-        public string? Text { get; set; }
-        public BuscarInstrutorQuery(string text)
+        public string? Input { get; set; }
+        public string? ApelidoPessoaLogada { get; set; }
+        public BuscarInstrutorQuery(BuscaPessoasQueryParameter parameters)
         {
-            Text = text;
+            parameters.Adapt(this);
         }
     }
 }

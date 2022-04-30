@@ -93,7 +93,9 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
 
             var encarregadoLocalExistente = _context.Pessoas.AsNoTracking()
                 .Where(x => x.ComumPessoa.Equals(pessoaAtual.ComumPessoa)
-                && pessoaAtual.CondicaoPessoa.ToUpper().Equals("ENCARREGADO")).FirstOrDefault();
+                && x.RegiaoPessoa.Equals(pessoaAtual.RegiaoPessoa)
+                && x.RegionalPessoa.Equals(pessoaAtual.RegionalPessoa)
+                && x.CondicaoPessoa.ToUpper().Equals("ENCARREGADO")).FirstOrDefault();
 
             if (encarregadoLocalExistente != null)
                 throw new ArgumentException("Já existe um encarregado Local nesta comum congregação");
