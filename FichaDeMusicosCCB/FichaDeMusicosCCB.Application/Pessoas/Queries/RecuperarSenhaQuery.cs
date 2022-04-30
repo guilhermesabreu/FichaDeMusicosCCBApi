@@ -9,7 +9,6 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Query
     public class RecuperarSenhaQuery : IRequest<bool>
     {
         public string? Email { get; set; }
-        public string? ApelidoPessoaLogada { get; set; }
         public RecuperarSenhaQuery(RecuperaSenhaQueryParameter parameters)
         {
             parameters.Adapt(this);

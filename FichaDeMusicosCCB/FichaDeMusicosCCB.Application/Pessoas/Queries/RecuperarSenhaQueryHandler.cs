@@ -40,13 +40,10 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Query
         public async Task<Pessoa> PessoaLogada(RecuperarSenhaQuery query)
         {
             var pessoaLogada = _context.Pessoas.AsNoTracking().Include(x => x.User)
-                .Where(x => x.User.UserName.Equals(query.ApelidoPessoaLogada)).FirstOrDefault();
+                .Where(x => x.User.UserName.Equals(query.Email)).FirstOrDefault();
 
             if (string.IsNullOrEmpty(pessoaLogada.EmailPessoa))
-                throw new ArgumentException("Você não cadastrou um e-mail !");
-
-            if (!pessoaLogada.EmailPessoa.Equals(query.Email))
-                throw new ArgumentException("E-mail incorreto !");
+                throw new ArgumentException("E-mail não cadastrado !");
 
             return pessoaLogada;
 

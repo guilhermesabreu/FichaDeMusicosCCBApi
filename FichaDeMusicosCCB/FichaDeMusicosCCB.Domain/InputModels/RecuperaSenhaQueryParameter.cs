@@ -9,6 +9,5 @@ namespace FichaDeMusicosCCB.Domain.InputModels
     public class RecuperaSenhaQueryParameter
     {
         public string? Email { get; set; }
-        public string? ApelidoPessoaLogada { get; set; }
     }
 }
