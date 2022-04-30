@@ -50,6 +50,7 @@ namespace FichaDeMusicosCCB.Api.Controllers
         }
 
         [HttpGet("nome-aluno")]
+        [Authorize(Roles = "ENCARREGADO,REGIONAL,INSTRUTOR")]
         public async Task<IActionResult> BuscarAluno([FromQuery] BuscaPessoasQueryParameter parameters)
         {
             try
@@ -126,6 +127,7 @@ namespace FichaDeMusicosCCB.Api.Controllers
         }
 
         [HttpGet("logada")]
+        [Authorize(Roles = "ENCARREGADO,REGIONAL,INSTRUTOR")]
         public async Task<IActionResult> BuscarPessoaLogada([FromQuery] string? apelido)
         {
             try
