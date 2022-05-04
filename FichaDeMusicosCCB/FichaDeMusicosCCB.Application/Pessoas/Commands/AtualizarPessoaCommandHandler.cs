@@ -46,6 +46,8 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
                     .Map(dest => dest.CondicaoPessoa, src => src.Condicao);
                 #endregion
                 var pessoaAtual = request.Adapt<Pessoa>();
+                await VerificaDadosObrigatorios(pessoaAtual);
+                await VerificaMinisterioNaBase(pessoaAtual);
 
                 var pessoaAntiga = await PessoaEncontrada(pessoaAtual.IdPessoa);
                 #region Mapear Response
@@ -83,9 +85,54 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
         {
             var pessoa = await _context.Pessoas.AsNoTracking().Include(x => x.User).Where(x => x.NomePessoa.Equals(nomeCompleto)).FirstOrDefaultAsync();
             if (pessoa == null)
-                return string.Empty;
+                return !string.IsNullOrEmpty(nomeCompleto) ? nomeCompleto : "";
 
             return pessoa.User.UserName;
+        }
+
+        public async Task VerificaDadosObrigatorios(Pessoa pessoa)
+        {
+            switch (pessoa.CondicaoPessoa.ToUpper())
+            {
+                case "ENCARREGADO":
+                    if (string.IsNullOrEmpty(pessoa.ApelidoEncRegionalPessoa)
+                    || string.IsNullOrEmpty(pessoa.ComumPessoa))
+                        throw new ArgumentException("Encarregado Regional ou comum não foram preenchido."); break;
+
+                case "INSTRUTOR":
+                    if (string.IsNullOrEmpty(pessoa.ApelidoEncRegionalPessoa)
+                        || string.IsNullOrEmpty(pessoa.ApelidoEncarregadoPessoa)
+                        || string.IsNullOrEmpty(pessoa.ComumPessoa))
+                        throw new ArgumentException("Encarregado Regional, Encarregado local ou comum não foram preenchidos."); break;
+
+            }
+            if (string.IsNullOrEmpty(pessoa.ComumPessoa) || string.IsNullOrEmpty(pessoa.RegiaoPessoa)
+                || string.IsNullOrEmpty(pessoa.RegionalPessoa))
+                throw new ArgumentException("Dados de localidade não informados");
+        }
+
+        public async Task VerificaMinisterioNaBase(Pessoa pessoa)
+        {
+            switch (pessoa.CondicaoPessoa.ToUpper())
+            {
+                case "ENCARREGADO":
+                    if (!string.IsNullOrEmpty(pessoa.ApelidoEncRegionalPessoa))
+                    {
+                        if (!_context.Users.AsNoTracking().Any(x => x.UserName.Equals(pessoa.ApelidoEncRegionalPessoa)))
+                            throw new ArgumentException("O Encarregado Regional não existe"); break;
+                    }
+                    break;
+
+                case "INSTRUTOR":
+                    if (!string.IsNullOrEmpty(pessoa.ApelidoEncRegionalPessoa) || !string.IsNullOrEmpty(pessoa.ApelidoEncarregadoPessoa))
+                    {
+                        if (!_context.Users.AsNoTracking().Any(x => x.UserName.Equals(pessoa.ApelidoEncRegionalPessoa))
+                          || !_context.Users.AsNoTracking().Any(x => x.UserName.Equals(pessoa.ApelidoEncarregadoPessoa)))
+                            throw new ArgumentException("O Encarregado Regional ou Encarregado Local não existem"); break;
+                    }
+                    break;
+
+            }
         }
 
         public async Task<Pessoa> PessoaAtualizada(Pessoa pessoaAntiga, Pessoa pessoaAtual)
@@ -95,6 +142,7 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
                 .Where(x => x.ComumPessoa.Equals(pessoaAtual.ComumPessoa)
                 && x.RegiaoPessoa.Equals(pessoaAtual.RegiaoPessoa)
                 && x.RegionalPessoa.Equals(pessoaAtual.RegionalPessoa)
+                && pessoaAtual.CondicaoPessoa.ToUpper().Equals("ENCARREGADO")
                 && x.CondicaoPessoa.ToUpper().Equals("ENCARREGADO")).FirstOrDefault();
 
             if (encarregadoLocalExistente != null)

@@ -17,6 +17,11 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Query
         }
         public async Task<List<string>> Handle(BuscarAlunoQuery request, CancellationToken cancellationToken)
         {
+            if (string.IsNullOrEmpty(request.ApelidoPessoaLogada))
+                return _context.Pessoas.AsNoTracking().Include(x => x.User)
+                    .Where(x => x.NomePessoa.StartsWith(request.Input)
+                    && x.User.Role.Equals("ALUNO")).Select(x => x.NomePessoa).ToList();
+
             var pessoaLogada = PessoaLogada(request).Result;
             if(pessoaLogada.CondicaoPessoa.ToUpper().Equals("INSTRUTOR") || pessoaLogada.CondicaoPessoa.ToUpper().Equals("ENCARREGADO"))
                 return _context.Pessoas.AsNoTracking().Include(x => x.User)

@@ -28,7 +28,7 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
                     .Map(dest => dest.User.UserName, src => string.IsNullOrEmpty(src.UserName) ? Utils.NomeParaCredencial(src.Nome) : src.UserName)
                     .Map(dest => dest.User.Password, src => string.IsNullOrEmpty(src.Password) ? Utils.NomeParaCredencial(src.Nome) : src.Password)
                     .Map(dest => dest.NomePessoa, src => src.Nome)
-                    .Map(dest => dest.ApelidoInstrutorPessoa, src => !string.IsNullOrEmpty(src.Instrutor)? ";"+ src.Instrutor : "")
+                    .Map(dest => dest.ApelidoInstrutorPessoa, src => !string.IsNullOrEmpty(src.Instrutor) ? ";" + src.Instrutor : "")
                     .Map(dest => dest.ApelidoEncarregadoPessoa, src => ObterApelidoPeloNomeCompleto(src.EncarregadoLocal).Result)
                     .Map(dest => dest.ApelidoEncRegionalPessoa, src => ObterApelidoPeloNomeCompleto(src.EncarregadoRegional).Result)
                     .Map(dest => dest.RegiaoPessoa, src => src.Regiao)
@@ -44,6 +44,8 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
                 var pessoaEntity = request.Adapt<Pessoa>();
 
                 await CriarRoles();
+                await VerificaDadosObrigatorios(pessoaEntity);
+                await VerificaMinisterioNaBase(pessoaEntity);
                 await VerificaExistenciaPessoa(pessoaEntity);
                 #region Mapear Response
                 TypeAdapterConfig<Pessoa, PessoaViewModel>.NewConfig()
@@ -80,7 +82,7 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
         {
             var pessoa = await _context.Pessoas.AsNoTracking().Include(x => x.User).Where(x => x.NomePessoa.Equals(nomeCompleto)).FirstOrDefaultAsync();
             if (pessoa == null)
-                return string.Empty;
+                return !string.IsNullOrEmpty(nomeCompleto) ? nomeCompleto : "";
 
             return pessoa.User.UserName;
         }
@@ -104,20 +106,22 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
 
         public async Task VerificaExistenciaPessoa(Pessoa pessoa)
         {
-
             var usuario = await _context.Pessoas.AsNoTracking().Where(x => x.NomePessoa == pessoa.NomePessoa
                                                     || x.EmailPessoa == pessoa.EmailPessoa
                                                     || x.CelularPessoa == pessoa.CelularPessoa).ToListAsync();
+
+
 
             var encarregadoLocalExistente = _context.Pessoas.AsNoTracking()
                 .Where(x => x.ComumPessoa.Equals(pessoa.ComumPessoa)
                 && x.RegiaoPessoa.Equals(pessoa.RegiaoPessoa)
                 && x.RegionalPessoa.Equals(pessoa.RegionalPessoa)
+                && pessoa.CondicaoPessoa.ToUpper().Equals("ENCARREGADO")
                 && x.CondicaoPessoa.ToUpper().Equals("ENCARREGADO")).FirstOrDefault();
 
             if (encarregadoLocalExistente != null)
                 throw new ArgumentException("Já existe um encarregado Local nesta comum congregação");
-            
+
             if (usuario.Count > 0)
                 throw new ArgumentException("Os dados desta pessoa já está cadastrado em outra pessoa");
 
@@ -125,6 +129,51 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
             if (credencial.Count > 0)
                 throw new ArgumentException("Esta pessoa já está cadastrada");
 
+        }
+
+        public async Task VerificaDadosObrigatorios(Pessoa pessoa)
+        {
+            switch (pessoa.CondicaoPessoa.ToUpper())
+            {
+                case "ENCARREGADO":
+                    if (string.IsNullOrEmpty(pessoa.ApelidoEncRegionalPessoa)
+                    || string.IsNullOrEmpty(pessoa.ComumPessoa))
+                        throw new ArgumentException("Encarregado Regional ou comum não foram preenchido."); break;
+
+                case "INSTRUTOR":
+                    if (string.IsNullOrEmpty(pessoa.ApelidoEncRegionalPessoa)
+                        || string.IsNullOrEmpty(pessoa.ApelidoEncarregadoPessoa)
+                        || string.IsNullOrEmpty(pessoa.ComumPessoa))
+                        throw new ArgumentException("Encarregado Regional, Encarregado local ou comum não foram preenchidos."); break;
+
+            }
+            if (string.IsNullOrEmpty(pessoa.ComumPessoa) || string.IsNullOrEmpty(pessoa.RegiaoPessoa)
+                || string.IsNullOrEmpty(pessoa.RegionalPessoa))
+                throw new ArgumentException("Dados de localidade não informados");
+        }
+
+        public async Task VerificaMinisterioNaBase(Pessoa pessoa)
+        {
+            switch (pessoa.CondicaoPessoa.ToUpper())
+            {
+                case "ENCARREGADO":
+                    if (!string.IsNullOrEmpty(pessoa.ApelidoEncRegionalPessoa))
+                    {
+                        if (!_context.Users.AsNoTracking().Any(x => x.UserName.Equals(pessoa.ApelidoEncRegionalPessoa)))
+                            throw new ArgumentException("O Encarregado Regional não existe"); break;
+                    }
+                    break;
+
+                case "INSTRUTOR":
+                    if (!string.IsNullOrEmpty(pessoa.ApelidoEncRegionalPessoa) || !string.IsNullOrEmpty(pessoa.ApelidoEncarregadoPessoa))
+                    {
+                        if (!_context.Users.AsNoTracking().Any(x => x.UserName.Equals(pessoa.ApelidoEncRegionalPessoa))
+                          || !_context.Users.AsNoTracking().Any(x => x.UserName.Equals(pessoa.ApelidoEncarregadoPessoa)))
+                            throw new ArgumentException("O Encarregado Regional ou Encarregado Local não existem"); break;
+                    }
+                    break;
+
+            }
         }
 
         public async Task CriarRoles()

@@ -17,6 +17,12 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Query
         }
         public async Task<List<string>> Handle(BuscarEncarregadoLocalQuery request, CancellationToken cancellationToken)
         {
+
+            if(string.IsNullOrEmpty(request.ApelidoPessoaLogada))
+                return _context.Pessoas.AsNoTracking().Include(x => x.User)
+                    .Where(x => x.NomePessoa.StartsWith(request.Input)
+                    && x.User.Role.Equals("ENCARREGADO")).Select(x => x.NomePessoa).ToList();
+
             var pessoaLogada = PessoaLogada(request).Result;
                 return _context.Pessoas.AsNoTracking().Include(x => x.User)
                     .Where(x => x.NomePessoa.StartsWith(request.Input)
