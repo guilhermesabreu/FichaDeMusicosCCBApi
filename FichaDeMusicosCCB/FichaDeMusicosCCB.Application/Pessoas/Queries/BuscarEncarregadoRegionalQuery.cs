@@ -5,7 +5,7 @@ using MediatR;
 
 namespace FichaDeMusicosCCB.Application.Pessoas.Query
 {
-    public class BuscarEncarregadoRegionalQuery : IRequest<List<string>>
+    public class BuscarEncarregadoRegionalQuery : IRequest<List<PessoaViewModel>>
     {
         public string? Input { get; set; }
         public string? ApelidoPessoaLogada { get; set; }

@@ -69,7 +69,7 @@ namespace FichaDeMusicosCCB.Api.Controllers
             }
         }
 
-        [HttpGet("nome-instrutor")]
+        [HttpGet("instrutor-por-nome")]
         public async Task<IActionResult> BuscarInstrutor([FromQuery] BuscaPessoasQueryParameter parameters)
         {
             try
@@ -88,7 +88,7 @@ namespace FichaDeMusicosCCB.Api.Controllers
             }
         }
 
-        [HttpGet("nome-encarregado-local")]
+        [HttpGet("encarregado-local-por-nome")]
         public async Task<IActionResult> BuscarEncarregadoLocal([FromQuery] BuscaPessoasQueryParameter parameters)
         {
             try
@@ -107,7 +107,7 @@ namespace FichaDeMusicosCCB.Api.Controllers
             }
         }
 
-        [HttpGet("nome-encarregado-regional")]
+        [HttpGet("encarregado-regional-por-nome")]
         public async Task<IActionResult> BuscarEncarregadoRegional([FromQuery] BuscaPessoasQueryParameter parameters)
         {
             try
