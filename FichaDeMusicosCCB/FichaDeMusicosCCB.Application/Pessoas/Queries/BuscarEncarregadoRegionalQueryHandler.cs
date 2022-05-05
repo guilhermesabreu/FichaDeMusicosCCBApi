@@ -38,7 +38,7 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Query
             if (string.IsNullOrEmpty(request.ApelidoPessoaLogada))
                 return _context.Pessoas.AsNoTracking().Include(x => x.User)
                     .Where(x => x.NomePessoa.StartsWith(request.Input)
-                    && x.User.Role.Equals("REGIONAL")).Select(x => x.NomePessoa).Take(5).ToList().Adapt<List<PessoaViewModel>>();
+                    && x.User.Role.Equals("REGIONAL")).Take(5).ToList().Adapt<List<PessoaViewModel>>();
 
             var pessoaLogada = PessoaLogada(request).Result;
                 return _context.Pessoas.AsNoTracking().Include(x => x.User)
