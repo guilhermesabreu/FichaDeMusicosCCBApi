@@ -46,7 +46,7 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exception(Utils.MensagemErro500Padrao);
             }
 
         }

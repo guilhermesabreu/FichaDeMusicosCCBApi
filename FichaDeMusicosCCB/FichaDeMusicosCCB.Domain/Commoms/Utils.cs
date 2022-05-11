@@ -8,7 +8,7 @@ namespace FichaDeMusicosCCB.Domain.Commoms
 {
     public static class Utils
     {
-        public static string MensagemErro500Padrao { get; private set; } = "Ocorreu um erro inesperado!!! Favor contate a equipe de engenharia de software. (13)97405-8807";
+        public static string MensagemErro500Padrao { get; private set; } = "Ocorreu um erro inesperado!!! Favor contate o Encarregado Local da sua comum";
 
 
         public static string NomeParaCredencial(string nome)

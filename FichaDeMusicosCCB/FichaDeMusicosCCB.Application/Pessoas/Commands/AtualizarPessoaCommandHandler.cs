@@ -76,16 +76,16 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exception(Utils.MensagemErro500Padrao);
             }
 
         }
 
-        public async Task<string> ObterApelidoPeloNomeCompleto(string nomeCompleto)
+        public async Task<string> ObterApelidoPeloNomeCompleto(string nome)
         {
-            var pessoa = await _context.Pessoas.AsNoTracking().Include(x => x.User).Where(x => x.NomePessoa.Equals(nomeCompleto)).FirstOrDefaultAsync();
+            var pessoa = await _context.Pessoas.AsNoTracking().Include(x => x.User).Where(x => x.NomePessoa.Equals(nome) || x.User.UserName.Equals(nome)).FirstOrDefaultAsync();
             if (pessoa == null)
-                return !string.IsNullOrEmpty(nomeCompleto) ? nomeCompleto : "";
+                return !string.IsNullOrEmpty(nome) ? nome : "";
 
             return pessoa.User.UserName;
         }

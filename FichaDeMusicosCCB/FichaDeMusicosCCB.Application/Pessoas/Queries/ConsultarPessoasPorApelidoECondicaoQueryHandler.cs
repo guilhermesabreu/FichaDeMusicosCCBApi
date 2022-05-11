@@ -17,56 +17,68 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Query
         }
         public async Task<List<PessoaViewModel>> Handle(ConsultarPessoasPorApelidoECondicaoQuery request, CancellationToken cancellationToken)
         {
-            #region Mapeamento
-            TypeAdapterConfig<Pessoa, PessoaViewModel>.NewConfig()
-                    .Map(dest => dest.Id, src => src.IdPessoa)
-                    .Map(dest => dest.Nome, src => src.NomePessoa)
-                    .Map(dest => dest.ApelidoInstrutor, src => src.ApelidoInstrutorPessoa)
-                    .Map(dest => dest.ApelidoEncarregado, src => src.ApelidoEncarregadoPessoa)
-                    .Map(dest => dest.ApelidoEncRegional, src => src.ApelidoEncRegionalPessoa)
-                    .Map(dest => dest.Regiao, src => src.RegiaoPessoa)
-                    .Map(dest => dest.Regional, src => src.RegionalPessoa)
-                    .Map(dest => dest.Celular, src => src.CelularPessoa)
-                    .Map(dest => dest.Email, src => src.EmailPessoa)
-                    .Map(dest => dest.DataNascimento, src => Utils.DataString(src.DataNascimentoPessoa))
-                    .Map(dest => dest.DataInicio, src => Utils.DataString(src.DataInicioPessoa))
-                    .Map(dest => dest.Comum, src => src.ComumPessoa)
-                    .Map(dest => dest.Instrumento, src => src.InstrumentoPessoa)
-                    .Map(dest => dest.Condicao, src => src.CondicaoPessoa);
+            try
+            {
+                #region Mapeamento
+                TypeAdapterConfig<Pessoa, PessoaViewModel>.NewConfig()
+                        .Map(dest => dest.Id, src => src.IdPessoa)
+                        .Map(dest => dest.Nome, src => src.NomePessoa)
+                        .Map(dest => dest.ApelidoInstrutor, src => src.ApelidoInstrutorPessoa)
+                        .Map(dest => dest.ApelidoEncarregado, src => src.ApelidoEncarregadoPessoa)
+                        .Map(dest => dest.ApelidoEncRegional, src => src.ApelidoEncRegionalPessoa)
+                        .Map(dest => dest.Regiao, src => src.RegiaoPessoa)
+                        .Map(dest => dest.Regional, src => src.RegionalPessoa)
+                        .Map(dest => dest.Celular, src => src.CelularPessoa)
+                        .Map(dest => dest.Email, src => src.EmailPessoa)
+                        .Map(dest => dest.DataNascimento, src => Utils.DataString(src.DataNascimentoPessoa))
+                        .Map(dest => dest.DataInicio, src => Utils.DataString(src.DataInicioPessoa))
+                        .Map(dest => dest.Comum, src => src.ComumPessoa)
+                        .Map(dest => dest.Instrumento, src => src.InstrumentoPessoa)
+                        .Map(dest => dest.Condicao, src => src.CondicaoPessoa);
 
-            TypeAdapterConfig<Ocorrencia, OcorrenciaViewModel>.NewConfig()
-                    .Map(dest => dest.DataOcorrencia, src => Utils.DataString(src.DataOcorrencia))
-                    .Map(dest => dest.NumeroLicao, src => src.NumeroLicaoOcorrencia)
-                    .Map(dest => dest.NomeMetodo, src => src.MetodoOcorrencia)
-                    .Map(dest => dest.ObservacaoInstrutor, src => src.ObservacaoOcorrencia);
+                TypeAdapterConfig<Ocorrencia, OcorrenciaViewModel>.NewConfig()
+                        .Map(dest => dest.DataOcorrencia, src => Utils.DataString(src.DataOcorrencia))
+                        .Map(dest => dest.NumeroLicao, src => src.NumeroLicaoOcorrencia)
+                        .Map(dest => dest.NomeMetodo, src => src.MetodoOcorrencia)
+                        .Map(dest => dest.ObservacaoInstrutor, src => src.ObservacaoOcorrencia);
 
-            //Observar se irá trazer os dados da ocorrência e hinos
-            #endregion
-            if (string.IsNullOrEmpty(request.ApelidoEncarregado) && string.IsNullOrEmpty(request.ApelidoEncarregadoRegional) && string.IsNullOrEmpty(request.ApelidoInstrutor))
-                throw new ArgumentException("Informe o apelido do encarregado/instrutor ou encarregado regional.");
+                //Observar se irá trazer os dados da ocorrência e hinos
+                #endregion
+                if (string.IsNullOrEmpty(request.ApelidoEncarregado) && string.IsNullOrEmpty(request.ApelidoEncarregadoRegional) && string.IsNullOrEmpty(request.ApelidoInstrutor))
+                    throw new ArgumentException("Informe o apelido do encarregado/instrutor ou encarregado regional.");
 
-            if (string.IsNullOrEmpty(request.ApelidoEncarregado) && string.IsNullOrEmpty(request.ApelidoEncarregadoRegional) && string.IsNullOrEmpty(request.ApelidoInstrutor))
-                throw new ArgumentException("Informe a condição que queira filtrar.");
+                if (string.IsNullOrEmpty(request.ApelidoEncarregado) && string.IsNullOrEmpty(request.ApelidoEncarregadoRegional) && string.IsNullOrEmpty(request.ApelidoInstrutor))
+                    throw new ArgumentException("Informe a condição que queira filtrar.");
 
-            var pessoas = _context.Pessoas.AsQueryable().Include(x => x.Hinos).Include(x => x.Ocorrencias);
+                var pessoas = _context.Pessoas.AsQueryable().Include(x => x.Hinos).Include(x => x.Ocorrencias);
 
 
-            var pessoasPorInstrutor = pessoas.Where(x => (x.ApelidoInstrutorPessoa.Contains(request.ApelidoInstrutor)
-                                                      || x.ApelidoEncarregadoPessoa.Equals(request.ApelidoEncarregado)
-                                                      || x.ApelidoEncRegionalPessoa.Equals(request.ApelidoEncarregadoRegional))
-                                                      && x.CondicaoPessoa.Equals(request.Condicao)).ToList()
-                .Select(x =>
-                {
-                    x.ApelidoEncarregadoPessoa = ObterNomePeloApelido(x.ApelidoEncarregadoPessoa).Result;
-                    x.ApelidoInstrutorPessoa = ObterNomePeloApelido(x.ApelidoInstrutorPessoa).Result;
-                    x.ApelidoEncRegionalPessoa = ObterNomePeloApelido(x.ApelidoEncRegionalPessoa).Result;
-                    return x;
-                }).ToList();
+                var pessoasPorInstrutor = pessoas.Where(x => (x.ApelidoInstrutorPessoa.Contains(request.ApelidoInstrutor)
+                                                          || x.ApelidoEncarregadoPessoa.Equals(request.ApelidoEncarregado)
+                                                          || x.ApelidoEncRegionalPessoa.Equals(request.ApelidoEncarregadoRegional))
+                                                          && x.CondicaoPessoa.Equals(request.Condicao)).ToList()
+                    .Select(x =>
+                    {
+                        x.ApelidoEncarregadoPessoa = ObterNomePeloApelido(x.ApelidoEncarregadoPessoa).Result;
+                        x.ApelidoInstrutorPessoa = ObterNomePeloApelido(x.ApelidoInstrutorPessoa).Result;
+                        x.ApelidoEncRegionalPessoa = ObterNomePeloApelido(x.ApelidoEncRegionalPessoa).Result;
+                        return x;
+                    }).ToList();
 
-            //if (!string.IsNullOrEmpty(request.Comum))
-            //    return pessoasPorInstrutor.Where(x => x.ComumPessoa.Equals(request.Comum)).ToList().Adapt<List<PessoaViewModel>>();
+                //if (!string.IsNullOrEmpty(request.Comum))
+                //    return pessoasPorInstrutor.Where(x => x.ComumPessoa.Equals(request.Comum)).ToList().Adapt<List<PessoaViewModel>>();
 
-            return pessoasPorInstrutor.Adapt<List<PessoaViewModel>>();
+                return pessoasPorInstrutor.Adapt<List<PessoaViewModel>>();
+            }
+            catch (ArgumentException ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(Utils.MensagemErro500Padrao);
+            }
+            
         }
 
         public async Task<string> ObterNomePeloApelido(string apelido)
