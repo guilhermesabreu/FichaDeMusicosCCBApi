@@ -145,7 +145,7 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
                 && pessoaAtual.CondicaoPessoa.ToUpper().Equals("ENCARREGADO")
                 && x.CondicaoPessoa.ToUpper().Equals("ENCARREGADO")).FirstOrDefault();
 
-            if (encarregadoLocalExistente != null)
+            if (encarregadoLocalExistente != null && encarregadoLocalExistente.IdPessoa != pessoaAtual.IdPessoa)
                 throw new ArgumentException("Já existe um encarregado Local nesta comum congregação");
 
             var userNameAtual = pessoaAtual.User.UserName == null ? pessoaAntiga.User.UserName : pessoaAtual.User.UserName;
