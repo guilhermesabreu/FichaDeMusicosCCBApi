@@ -24,7 +24,8 @@ namespace FichaDeMusicosCCB.Application.Hinos.Commands
                 #region MapearParametro
                 TypeAdapterConfig<AtualizarHinoCommand, Hino>.NewConfig()
                 .Map(dest => dest.NumeroHino, src => src.Numero)
-                .Map(dest => dest.VozHino, src => src.Voz);
+                .Map(dest => dest.VozHino, src => src.Voz)
+                .Map(dest => dest.DataHino, src => src.Data);
                 #endregion
                 var hinoAtual = request.Adapt<Hino>();
 
@@ -49,6 +50,7 @@ namespace FichaDeMusicosCCB.Application.Hinos.Commands
             var hinoAtualizado = hinoAntigo;
             hinoAtualizado.NumeroHino = hinoAtual.NumeroHino;
             hinoAtualizado.VozHino = hinoAtual.VozHino;
+            hinoAtualizado.DataHino = hinoAtual.DataHino;
 
             _context.Hinos.Update(hinoAtualizado);
             if (_context.SaveChanges().Equals(0))

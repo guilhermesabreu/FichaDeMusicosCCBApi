@@ -10,6 +10,7 @@ namespace FichaDeMusicosCCB.Application.Hinos.Commands
         public int IdHino { get; set; }
         public int Numero { get; set; }
         public string? Voz { get; set; }
+        public string? Data { get; set; }
         public int IdPessoa { get; set; }
         public AtualizarHinoCommand(HinoInputModel input)
         {
