@@ -33,10 +33,10 @@ namespace FichaDeMusicosCCB.Domain.Commoms
         public static string SepararDataDaHora(DateTime? data)
         {
             if (data != null)
-                return data.ToString().Split()[0];
+                return data.Value.Date.ToString("dd/MM/yyyy", System.Globalization.CultureInfo.GetCultureInfo("pt-BR"));
 
             else
-                return "";
+                return String.Empty;
 
         }
     }
