@@ -29,7 +29,7 @@ namespace FichaDeMusicosCCB.Application.Hinos.Commands
                 #endregion
                 var hinoEntity = request.Adapt<Hino>();
 
-                hinoEntity = await VerificaExistenciaHino(hinoEntity);
+                hinoEntity = await VerificaHino(hinoEntity);
                 
                 var hinoResponse = await HinoCriado(hinoEntity);
 
@@ -60,7 +60,7 @@ namespace FichaDeMusicosCCB.Application.Hinos.Commands
 
         }
 
-        public async Task<Hino> VerificaExistenciaHino(Hino hino)
+        public async Task<Hino> VerificaHino(Hino hino)
         {
             var hinoEntity = await _context.Hinos.AsNoTracking().Where(x => x.NumeroHino == hino.NumeroHino
                                                     && x.VozHino == hino.VozHino
@@ -73,6 +73,8 @@ namespace FichaDeMusicosCCB.Application.Hinos.Commands
             if (hinoEntity.Count > 0)
                 throw new ArgumentException("Este hino já foi cadastrado.");
 
+            if(hino.DataHino.HasValue && hino.DataHino.Value.Date > DateTime.Now.Date)
+                throw new ArgumentException("Escolha uma data anterior a esta.");
 
             hino.Pessoa = pessoaAluna;
             return hino; 

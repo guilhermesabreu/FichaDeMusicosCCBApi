@@ -77,6 +77,9 @@ namespace FichaDeMusicosCCB.Application.Ocorrencias.Commands
             if (ocorrenciaEntity.Count > 0)
                 throw new ArgumentException("Esta ocorrência já foi cadastrada.");
 
+            if (ocorrencia.DataOcorrencia.HasValue && ocorrencia.DataOcorrencia.Value.Date > DateTime.Now.Date)
+                throw new ArgumentException("Escolha uma data anterior a esta.");
+
             ocorrencia.Pessoa = pessoaAluna;
             return ocorrencia; 
         }

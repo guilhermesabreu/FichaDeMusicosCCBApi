@@ -84,6 +84,9 @@ namespace FichaDeMusicosCCB.Application.Ocorrencias.Commands
             if(ocorrencias.Pessoa == null)
                 throw new ArgumentException("Esta ocorrência não está atrelada a nenhuma pessoa");
 
+            if (ocorrencias.DataOcorrencia.HasValue && ocorrencias.DataOcorrencia.Value.Date > DateTime.Now.Date)
+                throw new ArgumentException("Escolha uma data anterior a esta.");
+
             return ocorrencias;
         }
     }
