@@ -65,9 +65,10 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Query
                         return x;
                     }).ToList();
 
-                //if (!string.IsNullOrEmpty(request.Comum))
-                //    return pessoasPorInstrutor.Where(x => x.ComumPessoa.Equals(request.Comum)).ToList().Adapt<List<PessoaViewModel>>();
-
+                #region Mapeamento Response
+                TypeAdapterConfig<Hino, HinoViewModel>.NewConfig()
+                        .Map(dest => dest.DataHino, src => Utils.DataString(src.DataHino));
+                #endregion
                 return pessoasPorInstrutor.Adapt<List<PessoaViewModel>>();
             }
             catch (ArgumentException ex)

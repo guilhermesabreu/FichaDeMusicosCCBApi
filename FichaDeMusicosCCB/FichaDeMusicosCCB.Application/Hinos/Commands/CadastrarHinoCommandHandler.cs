@@ -32,6 +32,11 @@ namespace FichaDeMusicosCCB.Application.Hinos.Commands
                 hinoEntity = await VerificaExistenciaHino(hinoEntity);
                 
                 var hinoResponse = await HinoCriado(hinoEntity);
+
+                #region Mapeamento Response
+                TypeAdapterConfig<Hino, HinoViewModel>.NewConfig()
+                        .Map(dest => dest.DataHino, src => Utils.DataString(src.DataHino));
+                #endregion
                 return hinoResponse.Adapt<HinoViewModel>();
             }
             catch (ArgumentException ex)
