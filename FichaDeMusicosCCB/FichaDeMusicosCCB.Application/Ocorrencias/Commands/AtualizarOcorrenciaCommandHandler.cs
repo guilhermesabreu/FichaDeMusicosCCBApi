@@ -30,7 +30,7 @@ namespace FichaDeMusicosCCB.Application.Ocorrencias.Commands
                 #endregion
                 var ocorrenciaAtual = request.Adapt<Ocorrencia>();
 
-                var ocorrenciaAntiga = await OcorrenciaEncontrada(ocorrenciaAtual.IdOcorrencia, ocorrenciaAtual.IdPessoa);
+                var ocorrenciaAntiga = await OcorrenciaEncontrada(ocorrenciaAtual);
                 #region Mapear Response
                 TypeAdapterConfig<Ocorrencia, OcorrenciaViewModel>.NewConfig()
                     .Map(dest => dest.NumeroLicao, src => src.NumeroLicaoOcorrencia)
@@ -67,9 +67,9 @@ namespace FichaDeMusicosCCB.Application.Ocorrencias.Commands
             return ocorrenciaAtual;
         }
 
-        public async Task<Ocorrencia> OcorrenciaEncontrada(long idOcorrencia, long idPessoa)
+        public async Task<Ocorrencia> OcorrenciaEncontrada(Ocorrencia ocorrenciaAtual)
         {
-            var ocorrencias = await _context.Ocorrencias.AsNoTracking().Include(x => x.Pessoa).AsNoTracking().Include(x => x.Pessoa).Where(x => x.IdOcorrencia == idOcorrencia).FirstOrDefaultAsync();
+            var ocorrencias = await _context.Ocorrencias.AsNoTracking().Include(x => x.Pessoa).AsNoTracking().Include(x => x.Pessoa).Where(x => x.IdOcorrencia == ocorrenciaAtual.IdOcorrencia).FirstOrDefaultAsync();
             if (ocorrencias == null)
                 throw new ArgumentException("Ocorrência não encontrada");
 
@@ -77,14 +77,14 @@ namespace FichaDeMusicosCCB.Application.Ocorrencias.Commands
             if (pessoaAluna == null)
                 throw new ArgumentException("A pessoa atrelada a esta ocorrência não é um aluno.");
 
-            if(pessoaAluna.IdPessoa != idPessoa)
+            if(pessoaAluna.IdPessoa != ocorrenciaAtual.IdPessoa)
                 throw new ArgumentException("Esta ocorrência já está atrelada a outro aluno");
 
 
             if(ocorrencias.Pessoa == null)
                 throw new ArgumentException("Esta ocorrência não está atrelada a nenhuma pessoa");
 
-            if (ocorrencias.DataOcorrencia.HasValue && ocorrencias.DataOcorrencia.Value.Date > DateTime.Now.Date)
+            if (ocorrenciaAtual.DataOcorrencia.HasValue && ocorrenciaAtual.DataOcorrencia.Value.Date > DateTime.Now.Date)
                 throw new ArgumentException("Escolha uma data anterior a esta.");
 
             return ocorrencias;
