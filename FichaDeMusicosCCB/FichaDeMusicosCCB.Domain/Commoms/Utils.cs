@@ -30,16 +30,6 @@ namespace FichaDeMusicosCCB.Domain.Commoms
 
         }
 
-        public static string SepararDataDaHora(DateTime? data)
-        {
-            if (data != null)
-                return data.Value.Date.ToString("dd/MM/yyyy", System.Globalization.CultureInfo.GetCultureInfo("pt-BR"));
-
-            else
-                return String.Empty;
-
-        }
     }
-
 
 }

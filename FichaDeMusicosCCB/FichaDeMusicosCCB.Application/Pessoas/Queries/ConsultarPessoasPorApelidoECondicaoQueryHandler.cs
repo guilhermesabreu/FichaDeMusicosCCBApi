@@ -42,6 +42,8 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Query
                         .Map(dest => dest.NomeMetodo, src => src.MetodoOcorrencia)
                         .Map(dest => dest.ObservacaoInstrutor, src => src.ObservacaoOcorrencia);
 
+                TypeAdapterConfig<Hino, HinoViewModel>.NewConfig()
+                        .Map(dest => dest.DataHino, src => Utils.DataString(src.DataHino));
                 //Observar se irá trazer os dados da ocorrência e hinos
                 #endregion
                 if (string.IsNullOrEmpty(request.ApelidoEncarregado) && string.IsNullOrEmpty(request.ApelidoEncarregadoRegional) && string.IsNullOrEmpty(request.ApelidoInstrutor))
@@ -65,10 +67,6 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Query
                         return x;
                     }).ToList();
 
-                #region Mapeamento Response
-                TypeAdapterConfig<Hino, HinoViewModel>.NewConfig()
-                        .Map(dest => dest.DataHino, src => Utils.SepararDataDaHora(src.DataHino));
-                #endregion
                 return pessoasPorInstrutor.Adapt<List<PessoaViewModel>>();
             }
             catch (ArgumentException ex)

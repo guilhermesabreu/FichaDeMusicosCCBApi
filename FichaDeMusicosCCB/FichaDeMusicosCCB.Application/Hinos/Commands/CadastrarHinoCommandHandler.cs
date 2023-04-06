@@ -35,7 +35,7 @@ namespace FichaDeMusicosCCB.Application.Hinos.Commands
 
                 #region Mapeamento Response
                 TypeAdapterConfig<Hino, HinoViewModel>.NewConfig()
-                        .Map(dest => dest.DataHino, src => Utils.SepararDataDaHora(src.DataHino));
+                        .Map(dest => dest.DataHino, src => Utils.DataString(src.DataHino));
                 #endregion
                 return hinoResponse.Adapt<HinoViewModel>();
             }
