@@ -67,7 +67,7 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Query
 
                 #region Mapeamento Response
                 TypeAdapterConfig<Hino, HinoViewModel>.NewConfig()
-                        .Map(dest => dest.DataHino, src => Utils.DataString(src.DataHino));
+                        .Map(dest => dest.DataHino, src => Utils.SepararDataDaHora(src.DataHino));
                 #endregion
                 return pessoasPorInstrutor.Adapt<List<PessoaViewModel>>();
             }

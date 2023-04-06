@@ -29,6 +29,16 @@ namespace FichaDeMusicosCCB.Domain.Commoms
                 return "";
 
         }
+
+        public static string SepararDataDaHora(DateTime? data)
+        {
+            if (data != null)
+                return data.ToString().Split()[0];
+
+            else
+                return "";
+
+        }
     }
 
 
