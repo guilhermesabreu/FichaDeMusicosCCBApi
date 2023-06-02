@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FichaDeMusicosCCB.Domain.InputModels
+namespace FichaDeMusicosCCB.Domain.QueryParameters
 {
     public class RecuperaSenhaQueryParameter
     {
