@@ -37,7 +37,7 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
                     .Map(dest => dest.EmailPessoa, src => src.Email)
                     .Map(dest => dest.DataNascimentoPessoa, src => DateTimeOffset.Parse(src.DataNascimento).UtcDateTime)
                     .Map(dest => dest.DataInicioPessoa, src => DateTimeOffset.Parse(src.DataInicio).UtcDateTime)
-                    .Map(dest => dest.ComumPessoa, src => src.Comum)
+                    .Map(dest => dest.ComumPessoa, src => PreencherComumPeloEncarregado(src).Result)
                     .Map(dest => dest.InstrumentoPessoa, src => src.Instrumento)
                     .Map(dest => dest.CondicaoPessoa, src => src.Condicao);
                 #endregion
@@ -154,26 +154,32 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
 
         public async Task VerificaMinisterioNaBase(Pessoa pessoa)
         {
-            switch (pessoa.CondicaoPessoa.ToUpper())
+            if (!string.IsNullOrEmpty(pessoa.ApelidoEncRegionalPessoa))
             {
-                case "ENCARREGADO":
-                    if (!string.IsNullOrEmpty(pessoa.ApelidoEncRegionalPessoa))
-                    {
-                        if (!_context.Users.AsNoTracking().Any(x => x.UserName.Equals(pessoa.ApelidoEncRegionalPessoa)))
-                            throw new ArgumentException("O Encarregado Regional não existe"); break;
-                    }
-                    break;
-
-                case "INSTRUTOR":
-                    if (!string.IsNullOrEmpty(pessoa.ApelidoEncRegionalPessoa) || !string.IsNullOrEmpty(pessoa.ApelidoEncarregadoPessoa))
-                    {
-                        if (!_context.Users.AsNoTracking().Any(x => x.UserName.Equals(pessoa.ApelidoEncRegionalPessoa))
-                          || !_context.Users.AsNoTracking().Any(x => x.UserName.Equals(pessoa.ApelidoEncarregadoPessoa)))
-                            throw new ArgumentException("O Encarregado Regional ou Encarregado Local não existem"); break;
-                    }
-                    break;
-
+                if (!_context.Users.AsNoTracking().Any(x => x.UserName.Equals(pessoa.ApelidoEncRegionalPessoa)))
+                    throw new ArgumentException("O Encarregado Regional não existe");
             }
+            if (!string.IsNullOrEmpty(pessoa.ApelidoEncarregadoPessoa))
+            {
+                if (!_context.Users.AsNoTracking().Any(x => x.UserName.Equals(pessoa.ApelidoEncarregadoPessoa)))
+                    throw new ArgumentException("O Encarregado Local não existe");
+            }
+            if (!string.IsNullOrEmpty(pessoa.ApelidoInstrutorPessoa))
+            {
+                if (!_context.Users.AsNoTracking().Any(x => x.UserName.Equals(pessoa.ApelidoInstrutorPessoa)))
+                    throw new ArgumentException("O Instrutor não existe");
+            }
+        }
+
+        public async Task<string> PreencherComumPeloEncarregado(CadastrarPessoaCommand pessoa)
+        {
+            if (!string.IsNullOrEmpty(pessoa.EncarregadoLocal))
+            {
+                var comum = _context.Pessoas.AsNoTracking().Where(x => x.NomePessoa.Equals(pessoa.EncarregadoLocal))
+                    .Select(x => x.ComumPessoa).FirstOrDefault();
+                return comum!;
+            }
+            return pessoa.Comum!;
         }
 
         public async Task CriarRoles()
