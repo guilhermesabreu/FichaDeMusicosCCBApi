@@ -12,6 +12,9 @@ namespace FichaDeMusicosCCB.Persistence
     {
         public FichaDeMusicosCCBContext(DbContextOptions<FichaDeMusicosCCBContext> options) : base(options) { }
 
+        public DbSet<Comum> Comuns { get; set; }
+        public DbSet<Regional> Regionais { get; set; }
+        public DbSet<Regiao> Regioes { get; set; }
         public DbSet<Ocorrencia> Ocorrencias { get; set; }
         public DbSet<Pessoa> Pessoas { get; set; }
         public DbSet<Hino> Hinos { get; set; }
@@ -82,6 +85,38 @@ namespace FichaDeMusicosCCB.Persistence
             #endregion
             #endregion
 
+            #region Regional
+            #region 1 Regional para N Regioes
+            modelBuilder.Entity<Regional>()
+               .HasMany(h => h.Regioes)
+               .WithOne(h => h.Regional);
+            #endregion
+
+            #region Chave Primária
+            modelBuilder.Entity<Regional>()
+                .HasKey(h => h.IdRegional);
+            #endregion
+            #endregion
+
+            #region Regiao
+            #region 1 Regional para N Regioes
+            modelBuilder.Entity<Regiao>()
+               .HasMany(h => h.Comuns)
+               .WithOne(h => h.Regiao);
+            #endregion
+
+            #region Chave Primária
+            modelBuilder.Entity<Regiao>()
+                .HasKey(h => h.IdRegiao);
+            #endregion
+            #endregion
+
+            #region Comum
+            #region Chave Primária
+            modelBuilder.Entity<Comum>()
+                .HasKey(h => h.IdComum);
+            #endregion
+            #endregion
         }
     }
 }

@@ -12,12 +12,12 @@ namespace FichaDeMusicosCCB.Api.Controllers
     [ApiVersion("1")]
     [Route("api/v{version:apiVersion}/pessoas")]
     [ApiController]
-    public class PessoaController : ControllerBase
+    public class PessoasController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly ILogger<PessoaController> _logger;
+        private readonly ILogger<PessoasController> _logger;
 
-        public PessoaController(IMediator mediator, ILogger<PessoaController> logger)
+        public PessoasController(IMediator mediator, ILogger<PessoasController> logger)
         {
             _mediator = mediator;
             _logger = logger;
