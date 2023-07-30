@@ -23,7 +23,6 @@ namespace FichaDeMusicosCCB.Api.Controllers
         }
 
         [HttpGet("regionais")]
-        [Authorize(Roles = "ENCARREGADO,REGIONAL,INSTRUTOR")]
         public async Task<IActionResult> BuscarRegionais([FromQuery] BuscaLocalidadesQueryParameter parameters)
         {
             try
@@ -43,7 +42,6 @@ namespace FichaDeMusicosCCB.Api.Controllers
         }
 
         [HttpGet("regioes")]
-        [Authorize(Roles = "ENCARREGADO,REGIONAL,INSTRUTOR")]
         public async Task<IActionResult> BuscarRegioes([FromQuery] BuscaLocalidadesQueryParameter parameters)
         {
             try
@@ -63,7 +61,6 @@ namespace FichaDeMusicosCCB.Api.Controllers
         }
 
         [HttpGet("comuns")]
-        [Authorize(Roles = "ENCARREGADO,REGIONAL,INSTRUTOR")]
         public async Task<IActionResult> BuscarComum([FromQuery] BuscaLocalidadesQueryParameter parameters)
         {
             try
