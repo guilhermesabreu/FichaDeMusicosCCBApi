@@ -23,7 +23,7 @@ namespace FichaDeMusicosCCB.Application.Hinos.Commands
             {
                 #region MapearParametro
                 TypeAdapterConfig<AtualizarHinoCommand, Hino>.NewConfig()
-                .Map(dest => dest.NumeroHino, src => src.Numero)
+                .Map(dest => dest.NumeroHino, src => src.Numero.ToString("D3"))
                 .Map(dest => dest.VozHino, src => src.Voz)
                 .Map(dest => dest.DataHino, src => src.Data);
                 #endregion

@@ -23,12 +23,12 @@ namespace FichaDeMusicosCCB.Application.Hinos.Commands
             {
                 #region MapearParametro
                 TypeAdapterConfig<CadastrarHinoCommand, Hino>.NewConfig()
-                    .Map(dest => dest.NumeroHino, src => src.Numero)
+                    .Map(dest => dest.NumeroHino, src => src.Numero.ToString("D3"))
                     .Map(dest => dest.DataHino, src => src.Data)
                     .Map(dest => dest.VozHino, src => src.Voz);
                 #endregion
-                var hinoEntity = request.Adapt<Hino>();
 
+                var hinoEntity = request.Adapt<Hino>();
                 hinoEntity = await VerificaHino(hinoEntity);
                 
                 var hinoResponse = await HinoCriado(hinoEntity);

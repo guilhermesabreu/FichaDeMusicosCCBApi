@@ -94,21 +94,30 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
         {
             switch (pessoa.CondicaoPessoa.ToUpper())
             {
+                case "REGIONAL":
+                    if (string.IsNullOrEmpty(pessoa.RegiaoPessoa) || string.IsNullOrEmpty(pessoa.RegionalPessoa))
+                        throw new ArgumentException("Dados de localidade não informados"); break;
+
                 case "ENCARREGADO":
+                    if (string.IsNullOrEmpty(pessoa.ComumPessoa) || string.IsNullOrEmpty(pessoa.RegiaoPessoa)
+                    || string.IsNullOrEmpty(pessoa.RegionalPessoa))
+                        throw new ArgumentException("Dados de localidade não informados");
+
                     if (string.IsNullOrEmpty(pessoa.ApelidoEncRegionalPessoa)
                     || string.IsNullOrEmpty(pessoa.ComumPessoa))
                         throw new ArgumentException("Encarregado Regional ou comum não foram preenchido."); break;
 
                 case "INSTRUTOR":
+                    if (string.IsNullOrEmpty(pessoa.ComumPessoa) || string.IsNullOrEmpty(pessoa.RegiaoPessoa)
+                    || string.IsNullOrEmpty(pessoa.RegionalPessoa))
+                        throw new ArgumentException("Dados de localidade não informados");
+
                     if (string.IsNullOrEmpty(pessoa.ApelidoEncRegionalPessoa)
                         || string.IsNullOrEmpty(pessoa.ApelidoEncarregadoPessoa)
                         || string.IsNullOrEmpty(pessoa.ComumPessoa))
                         throw new ArgumentException("Encarregado Regional, Encarregado local ou comum não foram preenchidos."); break;
 
             }
-            if (string.IsNullOrEmpty(pessoa.ComumPessoa) || string.IsNullOrEmpty(pessoa.RegiaoPessoa)
-                || string.IsNullOrEmpty(pessoa.RegionalPessoa))
-                throw new ArgumentException("Dados de localidade não informados");
         }
 
         public async Task VerificaMinisterioNaBase(Pessoa pessoa)

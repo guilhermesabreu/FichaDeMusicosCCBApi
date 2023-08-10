@@ -23,9 +23,9 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Query
                 TypeAdapterConfig<Pessoa, PessoaViewModel>.NewConfig()
                         .Map(dest => dest.Id, src => src.IdPessoa)
                         .Map(dest => dest.Nome, src => src.NomePessoa)
-                        .Map(dest => dest.ApelidoInstrutor, src => src.ApelidoInstrutorPessoa)
-                        .Map(dest => dest.ApelidoEncarregado, src => src.ApelidoEncarregadoPessoa)
-                        .Map(dest => dest.ApelidoEncRegional, src => src.ApelidoEncRegionalPessoa)
+                        .Map(dest => dest.ApelidoInstrutor, src => ObterNomePeloApelido(src.ApelidoInstrutorPessoa))
+                        .Map(dest => dest.ApelidoEncarregado, src => ObterNomePeloApelido(src.ApelidoEncarregadoPessoa))
+                        .Map(dest => dest.ApelidoEncRegional, src => ObterNomePeloApelido(src.ApelidoEncRegionalPessoa))
                         .Map(dest => dest.Regiao, src => src.RegiaoPessoa)
                         .Map(dest => dest.Regional, src => src.RegionalPessoa)
                         .Map(dest => dest.Celular, src => src.CelularPessoa)
@@ -52,20 +52,15 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Query
                 if (string.IsNullOrEmpty(request.ApelidoEncarregado) && string.IsNullOrEmpty(request.ApelidoEncarregadoRegional) && string.IsNullOrEmpty(request.ApelidoInstrutor))
                     throw new ArgumentException("Informe a condição que queira filtrar.");
 
-                var pessoas = _context.Pessoas.AsQueryable().Include(x => x.Hinos).Include(x => x.Ocorrencias);
+                var pessoas = _context.Pessoas.AsQueryable()
+                    .Include(x => x.Hinos.OrderByDescending(x => x.DataHino))
+                    .Include(x => x.Ocorrencias.OrderByDescending(x => x.DataOcorrencia));
 
 
                 var pessoasPorInstrutor = pessoas.Where(x => (x.ApelidoInstrutorPessoa.Contains(request.ApelidoInstrutor)
                                                           || x.ApelidoEncarregadoPessoa.Equals(request.ApelidoEncarregado)
                                                           || x.ApelidoEncRegionalPessoa.Equals(request.ApelidoEncarregadoRegional))
-                                                          && x.CondicaoPessoa.Equals(request.Condicao)).ToList()
-                    .Select(x =>
-                    {
-                        x.ApelidoEncarregadoPessoa = ObterNomePeloApelido(x.ApelidoEncarregadoPessoa).Result;
-                        x.ApelidoInstrutorPessoa = ObterNomePeloApelido(x.ApelidoInstrutorPessoa).Result;
-                        x.ApelidoEncRegionalPessoa = ObterNomePeloApelido(x.ApelidoEncRegionalPessoa).Result;
-                        return x;
-                    }).ToList();
+                                                          && x.CondicaoPessoa.Equals(request.Condicao)).ToList().OrderBy(x => x.NomePessoa);
 
                 return pessoasPorInstrutor.Adapt<List<PessoaViewModel>>();
             }
