@@ -1,5 +1,5 @@
 using FichaDeMusicosCCB.Application.Pessoas.Commands;
-using FichaDeMusicosCCB.Application.Pessoas.Query;
+using FichaDeMusicosCCB.Application.Pessoas.Queries;
 using FichaDeMusicosCCB.Domain.InputModels;
 using FichaDeMusicosCCB.Domain.QueryParameters;
 using MediatR;

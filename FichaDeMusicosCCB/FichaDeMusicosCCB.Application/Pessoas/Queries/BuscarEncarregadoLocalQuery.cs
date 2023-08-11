@@ -3,7 +3,7 @@ using FichaDeMusicosCCB.Domain.ViewModels;
 using Mapster;
 using MediatR;
 
-namespace FichaDeMusicosCCB.Application.Pessoas.Query
+namespace FichaDeMusicosCCB.Application.Pessoas.Queries
 {
     public class BuscarEncarregadoLocalQuery : IRequest<List<PessoaViewModel>>
     {

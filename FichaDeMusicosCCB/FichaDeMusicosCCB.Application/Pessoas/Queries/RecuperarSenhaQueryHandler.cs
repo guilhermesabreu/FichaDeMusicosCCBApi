@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System.Net.Mail;
 
-namespace FichaDeMusicosCCB.Application.Pessoas.Query
+namespace FichaDeMusicosCCB.Application.Pessoas.Queries
 {
     public class RecuperarSenhaQueryHandler : IRequestHandler<RecuperarSenhaQuery, bool>
     {

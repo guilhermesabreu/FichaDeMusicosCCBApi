@@ -1,12 +1,13 @@
 ﻿using FichaDeMusicosCCB.Domain.Commoms;
 using FichaDeMusicosCCB.Domain.Entities;
+using FichaDeMusicosCCB.Domain.Entities.Identity;
 using FichaDeMusicosCCB.Domain.ViewModels;
 using FichaDeMusicosCCB.Persistence;
 using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace FichaDeMusicosCCB.Application.Pessoas.Query
+namespace FichaDeMusicosCCB.Application.Pessoas.Queries
 {
     public class ConsultarPessoasPorApelidoECondicaoQueryHandler : IRequestHandler<ConsultarPessoasPorApelidoECondicaoQuery, List<PessoaViewModel>>
     {
@@ -23,9 +24,9 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Query
                 TypeAdapterConfig<Pessoa, PessoaViewModel>.NewConfig()
                         .Map(dest => dest.Id, src => src.IdPessoa)
                         .Map(dest => dest.Nome, src => src.NomePessoa)
-                        .Map(dest => dest.ApelidoInstrutor, src => ObterNomePeloApelido(src.ApelidoInstrutorPessoa))
-                        .Map(dest => dest.ApelidoEncarregado, src => ObterNomePeloApelido(src.ApelidoEncarregadoPessoa))
-                        .Map(dest => dest.ApelidoEncRegional, src => ObterNomePeloApelido(src.ApelidoEncRegionalPessoa))
+                        .Map(dest => dest.ApelidoInstrutor, src => src.ApelidoInstrutorPessoa)
+                        .Map(dest => dest.ApelidoEncarregado, src => src.ApelidoEncarregadoPessoa)
+                        .Map(dest => dest.ApelidoEncRegional, src => src.ApelidoEncRegionalPessoa)
                         .Map(dest => dest.Regiao, src => src.RegiaoPessoa)
                         .Map(dest => dest.Regional, src => src.RegionalPessoa)
                         .Map(dest => dest.Celular, src => src.CelularPessoa)
@@ -44,8 +45,8 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Query
 
                 TypeAdapterConfig<Hino, HinoViewModel>.NewConfig()
                         .Map(dest => dest.DataHino, src => Utils.DataString(src.DataHino));
-                //Observar se irá trazer os dados da ocorrência e hinos
                 #endregion
+
                 if (string.IsNullOrEmpty(request.ApelidoEncarregado) && string.IsNullOrEmpty(request.ApelidoEncarregadoRegional) && string.IsNullOrEmpty(request.ApelidoInstrutor))
                     throw new ArgumentException("Informe o apelido do encarregado/instrutor ou encarregado regional.");
 
@@ -60,7 +61,16 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Query
                 var pessoasPorInstrutor = pessoas.Where(x => (x.ApelidoInstrutorPessoa.Contains(request.ApelidoInstrutor)
                                                           || x.ApelidoEncarregadoPessoa.Equals(request.ApelidoEncarregado)
                                                           || x.ApelidoEncRegionalPessoa.Equals(request.ApelidoEncarregadoRegional))
-                                                          && x.CondicaoPessoa.Equals(request.Condicao)).ToList().OrderBy(x => x.NomePessoa);
+                                                          && x.CondicaoPessoa.Equals(request.Condicao)).ToList().OrderBy(x => x.NomePessoa)
+                    .Select(x =>
+                    {
+                        x.ApelidoInstrutorPessoa = ObterInstrutorPeloApelido(x.ApelidoInstrutorPessoa).Result;
+                        x.ApelidoEncarregadoPessoa = ObterEncarregadoPeloApelido(x.ApelidoEncarregadoPessoa).Result;
+                        x.ApelidoEncRegionalPessoa = ObterEncarregadoPeloApelido(x.ApelidoEncRegionalPessoa).Result;
+                        return x;
+                    }).ToList();
+
+
 
                 return pessoasPorInstrutor.Adapt<List<PessoaViewModel>>();
             }
@@ -72,44 +82,39 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Query
             {
                 throw new Exception(Utils.MensagemErro500Padrao);
             }
-            
+
         }
 
-        public async Task<string> ObterNomePeloApelido(string apelido)
+        public async Task<string> ObterInstrutorPeloApelido(string apelido)
         {
 
-            if (!string.IsNullOrEmpty(apelido) && apelido.Contains(";"))
-            {
-                var instrutores = apelido.Split(';');
-                string nomesCompletos = "";
-                foreach (var instrutor in instrutores)
-                {
-                    var pessoa = await _context.Pessoas.AsNoTracking()
-                        .Include(x => x.User)
-                        .Where(x => !string.IsNullOrEmpty(x.User.UserName) 
-                        && x.User.UserName.Equals(instrutor)).FirstOrDefaultAsync();
-                    if (pessoa != null)
-                    {
-                        nomesCompletos = !nomesCompletos.Equals("") 
-                                        ? nomesCompletos + ";"+ pessoa.NomePessoa 
-                                        : pessoa.NomePessoa;
-                    }
-                }
-                return nomesCompletos;
-            }
-            else
-            {
+            var instrutores = apelido.Split(';');
+            string nomesCompletos = "";
 
-                var pessoa = await _context.Pessoas.AsNoTracking().Include(x => x.User).Where(x => !string.IsNullOrEmpty(x.User.UserName) && x.User.UserName.Equals(apelido)).FirstOrDefaultAsync();
-                if (pessoa == null)
-                    return string.Empty;
 
-                return pessoa.NomePessoa;
-            }
+            var pessoa = await _context.Pessoas.AsNoTracking()
+                .Include(x => x.User)
+                .Where(x => !string.IsNullOrEmpty(x.User.UserName)
+                && instrutores.Any(ins => ins.Equals(x.User.UserName)))
+                .Select(x => !nomesCompletos.Equals("")
+                                ? x.NomePessoa : x.NomePessoa)
+                .ToListAsync();
+            var result = string.Join(";", pessoa.ToArray());
+            return result;
 
         }
 
+        public async Task<string> ObterEncarregadoPeloApelido(string apelido)
+        {
+            var pessoa = await _context.Pessoas.AsNoTracking().Include(x => x.User).Where(x => !string.IsNullOrEmpty(x.User.UserName) && x.User.UserName.Equals(apelido)).FirstOrDefaultAsync();
+            if (pessoa == null)
+                return string.Empty;
+
+            return pessoa.NomePessoa;
+
+        }
 
 
     }
 }
+

@@ -6,7 +6,7 @@ using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace FichaDeMusicosCCB.Application.Pessoas.Query
+namespace FichaDeMusicosCCB.Application.Pessoas.Queries
 {
     public class BuscarAlunoQueryHandler : IRequestHandler<BuscarAlunoQuery, List<string>>
     {
