@@ -66,36 +66,27 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
             alunoEncontrado.ApelidoInstrutorPessoa = string.IsNullOrEmpty(alunoEncontrado.ApelidoInstrutorPessoa) ? "" : alunoEncontrado.ApelidoInstrutorPessoa;
             alunoEncontrado.ApelidoEncarregadoPessoa = string.IsNullOrEmpty(alunoEncontrado.ApelidoEncarregadoPessoa) ? "" : alunoEncontrado.ApelidoEncarregadoPessoa;
             alunoEncontrado.ApelidoEncRegionalPessoa = string.IsNullOrEmpty(alunoEncontrado.ApelidoEncRegionalPessoa) ? "" : alunoEncontrado.ApelidoEncRegionalPessoa;
-            switch (pessoaFicha.CondicaoPessoa.ToUpper())
+            if (pessoaFicha.CondicaoPessoa.ToUpper().Equals("INSTRUTOR"))
             {
-                case "INSTRUTOR":
 
-                    if (alunoEncontrado.ApelidoInstrutorPessoa.Contains(pessoaFicha.User.UserName))
-                        throw new ArgumentException("Você já inseriu este aluno anteriormente");
+                if (alunoEncontrado.ApelidoInstrutorPessoa.Contains(pessoaFicha.User.UserName))
+                    throw new ArgumentException("Você já inseriu este aluno anteriormente");
 
-                    alunoEncontrado.ApelidoInstrutorPessoa = !alunoEncontrado.ApelidoInstrutorPessoa.Contains(pessoaFicha.User.UserName)
-                                                    ? alunoEncontrado.ApelidoInstrutorPessoa + ";" + pessoaFicha.User.UserName
-                                                    : alunoEncontrado.ApelidoInstrutorPessoa;
-                    break;
-                case "REGIONAL":
-                    if (string.IsNullOrEmpty(alunoEncontrado.ApelidoEncRegionalPessoa))
-                    {
-                        alunoEncontrado.ApelidoEncRegionalPessoa = pessoaFicha.User.UserName;break;
-                    }
-                    throw new ArgumentException("Este Aluno já possui um Encarregado Regional");
-                case "ENCARREGADO":
-                    if (string.IsNullOrEmpty(alunoEncontrado.ApelidoEncarregadoPessoa))
-                    {
-                        alunoEncontrado.ApelidoEncarregadoPessoa = pessoaFicha.User.UserName;break;
-                    }
-                    throw new ArgumentException("Este Aluno já possui um Encarregado Local");
+                alunoEncontrado.ApelidoInstrutorPessoa = !alunoEncontrado.ApelidoInstrutorPessoa.Contains(pessoaFicha.User.UserName)
+                                                ? alunoEncontrado.ApelidoInstrutorPessoa + ";" + pessoaFicha.User.UserName
+                                                : alunoEncontrado.ApelidoInstrutorPessoa;
+                _context.Pessoas.Update(alunoEncontrado);
+                _context.SaveChanges();
+
+                return alunoEncontrado;
             }
-
-            _context.Pessoas.Update(alunoEncontrado);
-            _context.SaveChanges();
-
-            return alunoEncontrado;
+            else
+            {
+                throw new ArgumentException("Apenas Instrutores podem incluir alunos em sua ficha");
+            }
         }
+
+
 
     }
 }

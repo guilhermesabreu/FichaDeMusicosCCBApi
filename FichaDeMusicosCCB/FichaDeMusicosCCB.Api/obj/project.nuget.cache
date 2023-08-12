@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "/iA89nPBMtF8fFtooD4C0K+sX89aUIV6NtBdHRqHpjcQyUVCqkEKfpa9KilgH3jiPl4wjcERFXpVnzqUwNQYnw==",
+  "dgSpecHash": "JX1++A5FaKrxGKZSGXXn2mZeCbM3F6MpQVAjmwcpQGb+7NSlxvwL16PuWIW4UuKzf92gldUFHDQX1YE+4y8BaA==",
   "success": true,
-  "projectFilePath": "C:\\src\\CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Api\\FichaDeMusicosCCB.Api.csproj",
+  "projectFilePath": "C:\\src\\CCB\\Ficha de Musicos CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Api\\FichaDeMusicosCCB.Api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\guilh\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\guilh\\.nuget\\packages\\mapster\\7.2.0\\mapster.7.2.0.nupkg.sha512",

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\src\\CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Api\\FichaDeMusicosCCB.Api.csproj": {}
+    "C:\\src\\CCB\\Ficha de Musicos CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Api\\FichaDeMusicosCCB.Api.csproj": {}
   },
   "projects": {
-    "C:\\src\\CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Api\\FichaDeMusicosCCB.Api.csproj": {
+    "C:\\src\\CCB\\Ficha de Musicos CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Api\\FichaDeMusicosCCB.Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\src\\CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Api\\FichaDeMusicosCCB.Api.csproj",
+        "projectUniqueName": "C:\\src\\CCB\\Ficha de Musicos CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Api\\FichaDeMusicosCCB.Api.csproj",
         "projectName": "FichaDeMusicosCCB.Api",
-        "projectPath": "C:\\src\\CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Api\\FichaDeMusicosCCB.Api.csproj",
+        "projectPath": "C:\\src\\CCB\\Ficha de Musicos CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Api\\FichaDeMusicosCCB.Api.csproj",
         "packagesPath": "C:\\Users\\guilh\\.nuget\\packages\\",
-        "outputPath": "C:\\src\\CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Api\\obj\\",
+        "outputPath": "C:\\src\\CCB\\Ficha de Musicos CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Api\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -32,11 +32,11 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\src\\CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Application\\FichaDeMusicosCCB.Application.csproj": {
-                "projectPath": "C:\\src\\CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Application\\FichaDeMusicosCCB.Application.csproj"
+              "C:\\src\\CCB\\Ficha de Musicos CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Application\\FichaDeMusicosCCB.Application.csproj": {
+                "projectPath": "C:\\src\\CCB\\Ficha de Musicos CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Application\\FichaDeMusicosCCB.Application.csproj"
               },
-              "C:\\src\\CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Persistence\\FichaDeMusicosCCB.Persistence.csproj": {
-                "projectPath": "C:\\src\\CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Persistence\\FichaDeMusicosCCB.Persistence.csproj"
+              "C:\\src\\CCB\\Ficha de Musicos CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Persistence\\FichaDeMusicosCCB.Persistence.csproj": {
+                "projectPath": "C:\\src\\CCB\\Ficha de Musicos CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Persistence\\FichaDeMusicosCCB.Persistence.csproj"
               }
             }
           }
@@ -108,14 +108,14 @@
         }
       }
     },
-    "C:\\src\\CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Application\\FichaDeMusicosCCB.Application.csproj": {
+    "C:\\src\\CCB\\Ficha de Musicos CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Application\\FichaDeMusicosCCB.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\src\\CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Application\\FichaDeMusicosCCB.Application.csproj",
+        "projectUniqueName": "C:\\src\\CCB\\Ficha de Musicos CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Application\\FichaDeMusicosCCB.Application.csproj",
         "projectName": "FichaDeMusicosCCB.Application",
-        "projectPath": "C:\\src\\CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Application\\FichaDeMusicosCCB.Application.csproj",
+        "projectPath": "C:\\src\\CCB\\Ficha de Musicos CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Application\\FichaDeMusicosCCB.Application.csproj",
         "packagesPath": "C:\\Users\\guilh\\.nuget\\packages\\",
-        "outputPath": "C:\\src\\CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Application\\obj\\",
+        "outputPath": "C:\\src\\CCB\\Ficha de Musicos CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Application\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -136,11 +136,11 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\src\\CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Domain\\FichaDeMusicosCCB.Domain.csproj": {
-                "projectPath": "C:\\src\\CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Domain\\FichaDeMusicosCCB.Domain.csproj"
+              "C:\\src\\CCB\\Ficha de Musicos CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Domain\\FichaDeMusicosCCB.Domain.csproj": {
+                "projectPath": "C:\\src\\CCB\\Ficha de Musicos CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Domain\\FichaDeMusicosCCB.Domain.csproj"
               },
-              "C:\\src\\CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Persistence\\FichaDeMusicosCCB.Persistence.csproj": {
-                "projectPath": "C:\\src\\CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Persistence\\FichaDeMusicosCCB.Persistence.csproj"
+              "C:\\src\\CCB\\Ficha de Musicos CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Persistence\\FichaDeMusicosCCB.Persistence.csproj": {
+                "projectPath": "C:\\src\\CCB\\Ficha de Musicos CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Persistence\\FichaDeMusicosCCB.Persistence.csproj"
               }
             }
           }
@@ -191,14 +191,14 @@
         }
       }
     },
-    "C:\\src\\CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Domain\\FichaDeMusicosCCB.Domain.csproj": {
+    "C:\\src\\CCB\\Ficha de Musicos CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Domain\\FichaDeMusicosCCB.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\src\\CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Domain\\FichaDeMusicosCCB.Domain.csproj",
+        "projectUniqueName": "C:\\src\\CCB\\Ficha de Musicos CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Domain\\FichaDeMusicosCCB.Domain.csproj",
         "projectName": "FichaDeMusicosCCB.Domain",
-        "projectPath": "C:\\src\\CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Domain\\FichaDeMusicosCCB.Domain.csproj",
+        "projectPath": "C:\\src\\CCB\\Ficha de Musicos CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Domain\\FichaDeMusicosCCB.Domain.csproj",
         "packagesPath": "C:\\Users\\guilh\\.nuget\\packages\\",
-        "outputPath": "C:\\src\\CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Domain\\obj\\",
+        "outputPath": "C:\\src\\CCB\\Ficha de Musicos CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -259,14 +259,14 @@
         }
       }
     },
-    "C:\\src\\CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Persistence\\FichaDeMusicosCCB.Persistence.csproj": {
+    "C:\\src\\CCB\\Ficha de Musicos CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Persistence\\FichaDeMusicosCCB.Persistence.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\src\\CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Persistence\\FichaDeMusicosCCB.Persistence.csproj",
+        "projectUniqueName": "C:\\src\\CCB\\Ficha de Musicos CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Persistence\\FichaDeMusicosCCB.Persistence.csproj",
         "projectName": "FichaDeMusicosCCB.Persistence",
-        "projectPath": "C:\\src\\CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Persistence\\FichaDeMusicosCCB.Persistence.csproj",
+        "projectPath": "C:\\src\\CCB\\Ficha de Musicos CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Persistence\\FichaDeMusicosCCB.Persistence.csproj",
         "packagesPath": "C:\\Users\\guilh\\.nuget\\packages\\",
-        "outputPath": "C:\\src\\CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Persistence\\obj\\",
+        "outputPath": "C:\\src\\CCB\\Ficha de Musicos CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Persistence\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -287,8 +287,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\src\\CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Domain\\FichaDeMusicosCCB.Domain.csproj": {
-                "projectPath": "C:\\src\\CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Domain\\FichaDeMusicosCCB.Domain.csproj"
+              "C:\\src\\CCB\\Ficha de Musicos CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Domain\\FichaDeMusicosCCB.Domain.csproj": {
+                "projectPath": "C:\\src\\CCB\\Ficha de Musicos CCB\\FichaDeMusicosCCBApi\\FichaDeMusicosCCB\\FichaDeMusicosCCB.Domain\\FichaDeMusicosCCB.Domain.csproj"
               }
             }
           }

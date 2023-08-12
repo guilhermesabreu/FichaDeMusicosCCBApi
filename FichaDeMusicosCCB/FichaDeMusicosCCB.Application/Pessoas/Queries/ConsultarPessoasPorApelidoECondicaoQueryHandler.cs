@@ -64,7 +64,6 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Queries
                                                           && x.CondicaoPessoa.Equals(request.Condicao)).ToList().OrderBy(x => x.NomePessoa)
                     .Select(x =>
                     {
-                        x.ApelidoInstrutorPessoa = ObterInstrutorPeloApelido(x.ApelidoInstrutorPessoa).Result;
                         x.ApelidoEncarregadoPessoa = ObterEncarregadoPeloApelido(x.ApelidoEncarregadoPessoa).Result;
                         x.ApelidoEncRegionalPessoa = ObterEncarregadoPeloApelido(x.ApelidoEncRegionalPessoa).Result;
                         return x;
@@ -85,24 +84,24 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Queries
 
         }
 
-        public async Task<string> ObterInstrutorPeloApelido(string apelido)
-        {
+        //public async Task<string> ObterInstrutorPeloApelido(string apelido)
+        //{
 
-            var instrutores = apelido.Split(';');
-            string nomesCompletos = "";
+        //    var instrutores = apelido.Split(';');
+        //    string nomesCompletos = "";
 
 
-            var pessoa = await _context.Pessoas.AsNoTracking()
-                .Include(x => x.User)
-                .Where(x => !string.IsNullOrEmpty(x.User.UserName)
-                && instrutores.Any(ins => ins.Equals(x.User.UserName)))
-                .Select(x => !nomesCompletos.Equals("")
-                                ? x.NomePessoa : x.NomePessoa)
-                .ToListAsync();
-            var result = string.Join(";", pessoa.ToArray());
-            return result;
+        //    var pessoa = await _context.Pessoas.AsNoTracking()
+        //        .Include(x => x.User)
+        //        .Where(x => !string.IsNullOrEmpty(x.User.UserName)
+        //        && instrutores.Any(ins => ins.Equals(x.User.UserName)))
+        //        .Select(x => !nomesCompletos.Equals("")
+        //                        ? x.NomePessoa : x.NomePessoa)
+        //        .ToListAsync();
+        //    var result = string.Join(";", pessoa.ToArray());
+        //    return result;
 
-        }
+        //}
 
         public async Task<string> ObterEncarregadoPeloApelido(string apelido)
         {
