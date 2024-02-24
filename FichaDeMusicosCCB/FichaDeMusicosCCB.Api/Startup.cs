@@ -73,8 +73,9 @@ namespace FichaDeMusicosCCB.Api
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
             services.AddMediatR(AppDomain.CurrentDomain.Load("FichaDeMusicosCCB.Application"));
+
             services.AddDbContext<FichaDeMusicosCCBContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("FichaDeMusicosCCBConnection"))
+                options.UseMySQL(Configuration.GetConnectionString("FichaDeMusicosCCBConnection"))
                 );
 
             IdentityBuilder builder = services.AddIdentityCore<User>(options =>
