@@ -106,12 +106,6 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
 
         public async Task VerificaExistenciaPessoa(Pessoa pessoa)
         {
-            var usuario = await _context.Pessoas.AsNoTracking().Where(x => x.NomePessoa == pessoa.NomePessoa
-                                                    || x.EmailPessoa == pessoa.EmailPessoa
-                                                    || x.CelularPessoa == pessoa.CelularPessoa).ToListAsync();
-
-
-
             var encarregadoLocalExistente = _context.Pessoas.AsNoTracking()
                 .Where(x => x.ComumPessoa.Equals(pessoa.ComumPessoa)
                 && x.RegiaoPessoa.Equals(pessoa.RegiaoPessoa)
@@ -121,13 +115,18 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
 
             if (encarregadoLocalExistente != null)
                 throw new ArgumentException("Já existe um encarregado Local nesta comum congregação");
+            
+            var credencial = await _context.Users.Where(x => x.UserName == pessoa.User.UserName).ToListAsync();
+            if (credencial.Count > 0)
+                throw new ArgumentException("Esta pessoa já está cadastrada");
+
+            var usuario = await _context.Pessoas.AsNoTracking().Where(x => x.NomePessoa == pessoa.NomePessoa
+                                                    || x.EmailPessoa == pessoa.EmailPessoa
+                                                    || x.CelularPessoa == pessoa.CelularPessoa).ToListAsync();
 
             if (usuario.Count > 0)
                 throw new ArgumentException("Os dados desta pessoa já está cadastrado em outra pessoa");
 
-            var credencial = await _context.Users.Where(x => x.UserName == pessoa.User.UserName).ToListAsync();
-            if (credencial.Count > 0)
-                throw new ArgumentException("Esta pessoa já está cadastrada");
 
         }
 
@@ -198,7 +197,7 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
 
         public async Task CriarRoles()
         {
-            var roles = await _context.Roles.Select(x => x.Name).ToListAsync();
+            var roles = await _context.Roles.AsNoTracking().Select(x => x.Name).ToListAsync();
             lock (_context)
             {
 
