@@ -48,6 +48,7 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
                 var pessoaAtual = request.Adapt<Pessoa>();
                 await VerificaDadosObrigatorios(pessoaAtual);
                 await VerificaMinisterioNaBase(pessoaAtual);
+                await VerificaExistenciaPessoa(pessoaAtual);
 
                 var pessoaAntiga = await PessoaEncontrada(pessoaAtual.IdPessoa);
                 #region Mapear Response
@@ -118,6 +119,34 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
                         throw new ArgumentException("Encarregado Regional, Encarregado local ou comum não foram preenchidos."); break;
 
             }
+        }
+
+        public async Task VerificaExistenciaPessoa(Pessoa pessoa)
+        {
+            var encarregadoLocalExistente = _context.Pessoas.AsNoTracking()
+                .Where(x => x.ComumPessoa.Equals(pessoa.ComumPessoa)
+                && x.RegiaoPessoa.Equals(pessoa.RegiaoPessoa)
+                && x.RegionalPessoa.Equals(pessoa.RegionalPessoa)
+                && pessoa.CondicaoPessoa.ToUpper().Equals("ENCARREGADO")
+                && x.CondicaoPessoa.ToUpper().Equals("ENCARREGADO")).FirstOrDefault();
+
+            if (encarregadoLocalExistente != null)
+                throw new ArgumentException("Já existe um encarregado Local nesta comum congregação");
+
+            var credencial = await _context.Users.Where(x => x.UserName == pessoa.User.UserName).ToListAsync();
+            if (credencial.Count > 0)
+                throw new ArgumentException("Esta pessoa já está cadastrada");
+
+            var usuario = await _context.Pessoas.AsNoTracking().Where(x => x.NomePessoa == pessoa.NomePessoa ||
+                                                    !string.IsNullOrEmpty(pessoa.EmailPessoa) ?
+                                                    pessoa.EmailPessoa == x.EmailPessoa : true ||
+                                                    !string.IsNullOrEmpty(pessoa.CelularPessoa) ?
+                                                    x.CelularPessoa == pessoa.CelularPessoa : true).ToListAsync();
+
+            if (usuario.Count > 0)
+                throw new ArgumentException("Os dados desta pessoa já está cadastrado em outra pessoa");
+
+
         }
 
         public async Task VerificaMinisterioNaBase(Pessoa pessoa)
