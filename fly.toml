@@ -1,4 +1,4 @@
-# fly.toml file generated for fichademusicosccbapi on 2022-12-12T17:44:31-03:00
+# fly.toml file generated for fichademusicosccbapi on 2024-05-20T22:58:22-03:00
 
 app = "fichademusicosccbapi"
 kill_signal = "SIGINT"
