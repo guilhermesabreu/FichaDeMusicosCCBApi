@@ -137,14 +137,19 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Commands
             if (credencial.Count > 0)
                 throw new ArgumentException("Esta pessoa já está cadastrada");
 
-            var usuario = await _context.Pessoas.AsNoTracking().Where(x => x.NomePessoa == pessoa.NomePessoa ||
-                                                    !string.IsNullOrEmpty(pessoa.EmailPessoa) ?
-                                                    pessoa.EmailPessoa == x.EmailPessoa : true ||
-                                                    !string.IsNullOrEmpty(pessoa.CelularPessoa) ?
-                                                    x.CelularPessoa == pessoa.CelularPessoa : true).ToListAsync();
+            var usuario = await _context.Pessoas.AsNoTracking()
+                .FirstOrDefaultAsync(x => x.NomePessoa == pessoa.NomePessoa);
 
-            if (usuario.Count > 0)
-                throw new ArgumentException("Os dados desta pessoa já está cadastrado em outra pessoa");
+            if (!string.IsNullOrEmpty(pessoa.EmailPessoa))
+                usuario = await _context.Pessoas.AsNoTracking()
+                .FirstOrDefaultAsync(x => x.EmailPessoa == pessoa.EmailPessoa);
+
+            if (!string.IsNullOrEmpty(pessoa.CelularPessoa))
+                usuario = await _context.Pessoas.AsNoTracking()
+                .FirstOrDefaultAsync(x => x.CelularPessoa == pessoa.CelularPessoa);
+
+            if (usuario != null && usuario.NomePessoa != pessoa.NomePessoa)
+                throw new ArgumentException("Os dados desta pessoa(nome, email ou celular ) já está cadastrado em outra pessoa");
 
 
         }
