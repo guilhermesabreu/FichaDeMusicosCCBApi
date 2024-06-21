@@ -66,19 +66,18 @@ namespace FichaDeMusicosCCB.Application.Ocorrencias.Commands
 
         public async Task<Ocorrencia> VerificaExistenciaOcorrencia(Ocorrencia ocorrenciaAtual)
         {
-            var ocorrenciaEntity = await _context.Ocorrencias.AsNoTracking().Where(x => x.MetodoOcorrencia == ocorrenciaAtual.MetodoOcorrencia
-                                                    && x.NumeroLicaoOcorrencia == ocorrenciaAtual.NumeroLicaoOcorrencia
-                                                    && x.IdPessoa == ocorrenciaAtual.IdPessoa).ToListAsync();
 
             var pessoaAluna = await _context.Pessoas.Where(x => x.IdPessoa == ocorrenciaAtual.IdPessoa && x.CondicaoPessoa.Equals("aluno")).FirstOrDefaultAsync();
             if(pessoaAluna == null)
                 throw new ArgumentException("Esta pessoa não é um aluno.");
 
-            if (ocorrenciaEntity.Count > 0)
-                throw new ArgumentException("Esta ocorrência já foi cadastrada.");
-
             if (ocorrenciaAtual.DataOcorrencia.HasValue && ocorrenciaAtual.DataOcorrencia.Value.Date > DateTime.Now.Date)
                 throw new ArgumentException("Escolha uma data anterior a esta.");
+
+            var ocorrenciaEntity = await _context.Ocorrencias.AsNoTracking().Where(x => x.DataOcorrencia!.Value.Date == ocorrenciaAtual.DataOcorrencia!.Value.Date
+                                                    && x.IdPessoa == ocorrenciaAtual.IdPessoa).ToListAsync();
+            if (ocorrenciaEntity.Count > 0)
+                throw new ArgumentException($"Já foi cadastrado uma ocorrência nesse mesmo dia: {ocorrenciaAtual.DataOcorrencia.Value.Date}");
 
             ocorrenciaAtual.Pessoa = pessoaAluna;
             return ocorrenciaAtual; 
