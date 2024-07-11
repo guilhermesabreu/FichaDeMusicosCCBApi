@@ -45,13 +45,13 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Queries
                 if (string.IsNullOrEmpty(request.ApelidoPessoaLogada))
                 {
                     pessoas = _context.Pessoas.AsNoTracking().Include(x => x.User)
-                        .Where(x => x.NomePessoa.StartsWith(request.Input)
+                        .Where(x => x.NomePessoa.ToUpper().StartsWith(request.Input.ToUpper())
                         && x.User.Role.Equals("ENCARREGADO")).ToList().Adapt<List<PessoaViewModel>>();
                 }
                 else
                 {
                     pessoas = _context.Pessoas.AsNoTracking().Include(x => x.User)
-                    .Where(x => x.NomePessoa.StartsWith(request.Input)
+                    .Where(x => x.NomePessoa.ToUpper().StartsWith(request.Input.ToUpper())
                     && x.User.Role.Equals("ENCARREGADO")
                     && x.RegiaoPessoa.Equals(pessoaLogada.RegiaoPessoa)
                     && x.RegionalPessoa.Equals(pessoaLogada.RegionalPessoa)).ToList().Adapt<List<PessoaViewModel>>();

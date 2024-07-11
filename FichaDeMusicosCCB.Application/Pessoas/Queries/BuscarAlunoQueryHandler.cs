@@ -23,7 +23,7 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Queries
                     return new List<string>();
 
                 var pessoas = _context.Pessoas.AsNoTracking().Include(x => x.User)
-                    .Where(x => x.NomePessoa.StartsWith(request.Input)
+                    .Where(x => x.NomePessoa.ToUpper().StartsWith(request.Input.ToUpper())
                     && x.User.Role.Equals("ALUNO")).Select(x => x.NomePessoa).Take(5).ToList();
                 if (pessoas.Count == 0)
                     throw new ArgumentException("Aluno não encontrado");

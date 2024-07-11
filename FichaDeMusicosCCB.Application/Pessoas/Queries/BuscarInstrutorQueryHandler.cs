@@ -46,13 +46,13 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Queries
                 if (string.IsNullOrEmpty(request.ApelidoPessoaLogada))
                 {
                     pessoas = _context.Pessoas.AsNoTracking().Include(x => x.User)
-                        .Where(x => x.NomePessoa.StartsWith(request.Input)
+                        .Where(x => x.NomePessoa.ToUpper().StartsWith(request.Input.ToUpper())
                         && x.User.Role.Equals("INSTRUTOR")).Take(5).ToList().Adapt<List<PessoaViewModel>>();
                 }
                 if (pessoaLogada.CondicaoPessoa.ToUpper().Equals("INSTRUTOR") || pessoaLogada.CondicaoPessoa.ToUpper().Equals("ENCARREGADO"))
                 {
                     pessoas = _context.Pessoas.AsNoTracking().Include(x => x.User)
-                        .Where(x => x.NomePessoa.StartsWith(request.Input)
+                        .Where(x => x.NomePessoa.ToUpper().StartsWith(request.Input.ToUpper())
                         && x.User.Role.Equals("INSTRUTOR")
                         && x.ComumPessoa.Equals(pessoaLogada.ComumPessoa)
                         && x.RegiaoPessoa.Equals(pessoaLogada.RegiaoPessoa)
@@ -62,7 +62,7 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Queries
                 else if (pessoaLogada.CondicaoPessoa.ToUpper().Equals("REGIONAL"))
                 {
                     pessoas = _context.Pessoas.AsNoTracking().Include(x => x.User)
-                       .Where(x => x.NomePessoa.StartsWith(request.Input)
+                       .Where(x => x.NomePessoa.ToUpper().StartsWith(request.Input.ToUpper())
                        && x.User.Role.Equals("INSTRUTOR")
                        && x.RegiaoPessoa.Equals(pessoaLogada.RegiaoPessoa)
                        && x.RegionalPessoa.Equals(pessoaLogada.RegionalPessoa)).Take(5).ToList().Adapt<List<PessoaViewModel>>();
