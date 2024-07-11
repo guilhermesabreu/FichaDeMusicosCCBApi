@@ -38,7 +38,7 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Queries
                 #endregion
 
                 var pessoas = new List<PessoaViewModel>();
-                if (request.Input.Length < 3)
+                if (request.Input.Length < 2)
                     return pessoas;
 
                 var pessoaLogada = PessoaLogada(request).Result;

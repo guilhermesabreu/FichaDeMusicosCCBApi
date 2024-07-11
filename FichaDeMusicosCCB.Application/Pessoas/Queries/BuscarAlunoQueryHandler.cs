@@ -19,7 +19,7 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Queries
         {
             try
             {
-                if (request.Input.Length < 3)
+                if (request.Input.Length < 2)
                     return new List<string>();
 
                 var pessoas = _context.Pessoas.AsNoTracking().Include(x => x.User)
