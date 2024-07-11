@@ -37,18 +37,30 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Queries
                         .Map(dest => dest.Condicao, src => src.CondicaoPessoa);
                 #endregion
 
+                var pessoas = new List<PessoaViewModel>();
+                if (request.Input.Length < 3)
+                    return pessoas;
+
+                var pessoaLogada = PessoaLogada(request).Result;
                 if (string.IsNullOrEmpty(request.ApelidoPessoaLogada))
-                    return _context.Pessoas.AsNoTracking().Include(x => x.User)
+                {
+                    pessoas = _context.Pessoas.AsNoTracking().Include(x => x.User)
                         .Where(x => x.NomePessoa.StartsWith(request.Input)
                         && x.User.Role.Equals("REGIONAL")).Take(5).ToList().Adapt<List<PessoaViewModel>>();
 
-                var pessoaLogada = PessoaLogada(request).Result;
-                return _context.Pessoas.AsNoTracking().Include(x => x.User)
-                    .Where(x => x.NomePessoa.StartsWith(request.Input)
-                    && x.User.Role.Equals("REGIONAL")
-                    && x.RegiaoPessoa.Equals(pessoaLogada.RegiaoPessoa)
-                    && x.RegionalPessoa.Equals(pessoaLogada.RegionalPessoa)).Take(5).ToList().Adapt<List<PessoaViewModel>>();
+                }
+                else
+                {
+                    pessoas = _context.Pessoas.AsNoTracking().Include(x => x.User)
+                        .Where(x => x.NomePessoa.StartsWith(request.Input)
+                        && x.User.Role.Equals("REGIONAL")
+                        && x.RegiaoPessoa.Equals(pessoaLogada.RegiaoPessoa)
+                        && x.RegionalPessoa.Equals(pessoaLogada.RegionalPessoa)).Take(5).ToList().Adapt<List<PessoaViewModel>>();
+                }
+                if (pessoas.Count == 0)
+                    throw new ArgumentException("Encarregado não encontrado");
 
+                return pessoas;
             }
             catch (ArgumentException ex)
             {
@@ -58,7 +70,7 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Queries
             {
                 throw new Exception(Utils.MensagemErro500Padrao);
             }
-            
+
         }
 
         public async Task<Pessoa> PessoaLogada(BuscarEncarregadoRegionalQuery query)

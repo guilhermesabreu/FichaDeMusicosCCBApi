@@ -37,18 +37,30 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Queries
                         .Map(dest => dest.Condicao, src => src.CondicaoPessoa);
                 #endregion
 
-                if (string.IsNullOrEmpty(request.ApelidoPessoaLogada))
-                    return _context.Pessoas.AsNoTracking().Include(x => x.User)
-                        .Where(x => x.NomePessoa.StartsWith(request.Input)
-                        && x.User.Role.Equals("ENCARREGADO")).ToList().Adapt<List<PessoaViewModel>>();
+                var pessoas = new List<PessoaViewModel>();
+                if (request.Input.Length < 3)
+                    return pessoas;
 
                 var pessoaLogada = PessoaLogada(request).Result;
-                return _context.Pessoas.AsNoTracking().Include(x => x.User)
+                if (string.IsNullOrEmpty(request.ApelidoPessoaLogada))
+                {
+                    pessoas = _context.Pessoas.AsNoTracking().Include(x => x.User)
+                        .Where(x => x.NomePessoa.StartsWith(request.Input)
+                        && x.User.Role.Equals("ENCARREGADO")).ToList().Adapt<List<PessoaViewModel>>();
+                }
+                else
+                {
+                    pessoas = _context.Pessoas.AsNoTracking().Include(x => x.User)
                     .Where(x => x.NomePessoa.StartsWith(request.Input)
                     && x.User.Role.Equals("ENCARREGADO")
                     && x.RegiaoPessoa.Equals(pessoaLogada.RegiaoPessoa)
                     && x.RegionalPessoa.Equals(pessoaLogada.RegionalPessoa)).ToList().Adapt<List<PessoaViewModel>>();
+                }
 
+                if (pessoas.Count == 0)
+                    throw new ArgumentException("Encarregado não encontrado");
+
+                return pessoas;
             }
             catch (ArgumentException ex)
             {

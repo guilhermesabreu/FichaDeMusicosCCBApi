@@ -19,10 +19,16 @@ namespace FichaDeMusicosCCB.Application.Pessoas.Queries
         {
             try
             {
-                return _context.Pessoas.AsNoTracking().Include(x => x.User)
+                if (request.Input.Length < 3)
+                    return new List<string>();
+
+                var pessoas = _context.Pessoas.AsNoTracking().Include(x => x.User)
                     .Where(x => x.NomePessoa.StartsWith(request.Input)
                     && x.User.Role.Equals("ALUNO")).Select(x => x.NomePessoa).Take(5).ToList();
+                if (pessoas.Count == 0)
+                    throw new ArgumentException("Aluno não encontrado");
 
+                return pessoas;
             }
             catch (ArgumentException ex)
             {
